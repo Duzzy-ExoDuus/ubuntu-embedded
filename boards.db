@@ -125,3 +125,10 @@ bootloader: vanilla
 bootloaders: bl1.bin.hardkernel:1 u-boot.bin:97
 serial: ttyS0
 pockets: updates security
+
+board: edison
+arch: i386
+layout: /,ext4,FILL
+serial: ttyMFD2
+ppa: ppa:p-pisati/embedded
+kernel: linux-edison
