@@ -1,0 +1,12 @@
+==== FIRST BOOT INSTRUCTIONS ====
+
+Turn on the Intel Edison, stop the boot process and type in:
+
+setenv stopwdog "mw.l 0xff009000 0x10f8 1"
+setenv loadkernel_ubuntu 'ext4load mmc 1:1 ${loadaddr} /boot/vmlinuz'
+setenv bootargs_ubuntu "setenv bootargs 'root=/dev/mmcblk1p1 rootfstype=ext4 rootwait ro console=ttyMFD2 earlyprintk=ttyMFD2,keep debug'"
+setenv bootcmd_ubuntu 'run stopwdog; run bootargs_ubuntu; run loadkernel_ubuntu; zboot ${loadaddr}'
+setenv bootcmd_old "$bootcmd"
+setenv bootcmd "run bootcmd_ubuntu"
+saveenv
+reset
