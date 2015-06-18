@@ -31,7 +31,11 @@ Or one for the 96Boards DragonBoard 410c:
 
 sudo ./make_img.sh -b dragon410c
 
-Serial console: 115200 8N1 - no hardware or software flow control 
+To create an Ubuntu image for the Intel Edison:
+
+sudo ./make_img.sh -b edison -d 14.04
+
+Serial console: 115200 8N1 - no hardware and software flow control 
 
 Default user / password: ubuntu / ubuntu
 
