@@ -1,0 +1,18 @@
+# interfaces(5) file used by ifup(8) and ifdown(8)
+
+auto lo
+iface lo inet loopback
+
+# uncomment this if you have a usb-eth dongle
+#auto eth0
+#iface eth0 inet dhcp
+
+# first configure /etc/wpa_supplicant.conf wrt your wifi network
+# then uncomment this block
+#auto wlan0
+#iface wlan0 inet dhcp
+#pre-up wpa_supplicant -B -Dwext -iwlan0 -c/etc/wpa_supplicant.conf
+#post-down killall -q wpa_supplicant
+
+# Include files from /etc/network/interfaces.d:
+source-directory /etc/network/interfaces.d
