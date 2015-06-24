@@ -133,3 +133,4 @@ layout: /,ext4,FILL
 serial: ttyMFD2
 ppa: ppa:p-pisati/embedded
 kernel: linux-edison
+packages: psmisc u-boot-tools wireless-tools wpasupplicant
