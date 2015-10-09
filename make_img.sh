@@ -471,9 +471,10 @@ fi
 
 # final environment setup
 trap cleanup 0 1 2 3 9 15
+COMPLETEVER=$(ubunturecentversion $ARCH $DISTRO)
 KERNEL=${KERNEL:-linux-image-generic}
-DEVICE="ubuntu-embedded-$DISTRO-$BOARD.img"
-ROOTFS="${UROOTFS:-http://cdimage.ubuntu.com/ubuntu-core/releases/$DISTRO/release/ubuntu-core-$(ubunturecentversion $ARCH $DISTRO)-core-$ARCH.tar.gz}"
+DEVICE="ubuntu-embedded-$COMPLETEVER-$BOARD.img"
+ROOTFS="${UROOTFS:-http://cdimage.ubuntu.com/ubuntu-core/releases/$DISTRO/release/ubuntu-core-$COMPLETEVER-core-$ARCH.tar.gz}"
 ROOTFSDIR=$(mktemp -d build/embedded-rootfs.XXXXXX)
 BOOTDIR=$(mktemp -d build/embedded-boot.XXXXXX)
 FSTABFILE=$(mktemp build/embedded-fstab.XXXXXX)
