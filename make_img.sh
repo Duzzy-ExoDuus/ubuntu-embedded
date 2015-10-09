@@ -248,6 +248,10 @@ layout_device()
 	LOOP=$(losetup -a | grep $DEVICE | cut -f1 -d: | cut -f3 -d/)
 	PHYSDEVICE="/dev/mapper/${LOOP}p"
 	BOOTLOADERDEVICE="/dev/${LOOP}"
+	# wait until PHYSDEVICE1 is created
+	until [ -b ${PHYSDEVICE}1 ]; do
+		sleep 0.5
+	done
 	echo "2) Making filesystems..."
 	PART=0
 	for i in $LAYOUT; do
