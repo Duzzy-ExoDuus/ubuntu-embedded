@@ -538,10 +538,13 @@ if [ "$DEBOOTSTRAP" -eq 0 ]; then
 else
 	CODENAME=$(ugetcod "$DISTRO")
 	debootstrap --arch="$ARCH" --variant=minbase --foreign "$CODENAME" "$ROOTFSDIR" "$ARCHIVE"
-	cp "$QEMU" "$ROOTFSDIR/usr/bin"
-	# finish off deboostrap config
-	chroot "$ROOTFSDIR" ./debootstrap/debootstrap --second-stage "$CODENAME" .
 fi
+cp "$QEMU" "$ROOTFSDIR/usr/bin"
+# finish off deboostrap config
+[ "$DEBOOTSTRAP" ] && chroot "$ROOTFSDIR" ./debootstrap/debootstrap --second-stage "$CODENAME" .
+cp /etc/resolv.conf $ROOTFSDIR/etc
+do_chroot $ROOTFSDIR apt-get update
+do_chroot $ROOTFSDIR apt-get install -y ifupdown
 
 # end of init_system_generic()
 
@@ -558,8 +561,6 @@ while read line; do
 	mount_dev "${DEV}" "${ROOTFSDIR}/${MPOINT}"
 done < $FSTABFILE
 
-cp $QEMU $ROOTFSDIR/usr/bin
-cp /etc/resolv.conf $ROOTFSDIR/etc
 cp /etc/hosts $ROOTFSDIR/etc
 cp $FSTABFILE $ROOTFSDIR/etc/fstab
 [ -n $SERIAL ] && sed "s/ttyX/$SERIAL/g" skel/serial.conf > $ROOTFSDIR/etc/init/${SERIAL}.conf
