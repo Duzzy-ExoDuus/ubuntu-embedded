@@ -468,7 +468,6 @@ BPKGS=$(get_field "$BOARD" "packages") || true
 BSCRIPT=$(get_field "$BOARD" "script") || true
 
 # sanitize input params
-[ "${DISTRO}" = "15.10" ] && echo "Error: $DISTRO is only valid as a stack= opt fow now." && exit 1
 [ "$DISTRO" = "$STACK" ] && STACK=""
 IMGSIZE=${USRIMGSIZE:-$(echo $DEFIMGSIZE)}
 [ "${IMGSIZE}" -lt "${DEFIMGSIZE}" ] && echo "Error: size can't be smaller than `numfmt --from=auto --to=iec ${DEFIMGSIZE}`" && exit 1
