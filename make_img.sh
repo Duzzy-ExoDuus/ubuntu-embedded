@@ -53,6 +53,7 @@ USER="ubuntu"
 PASSWD="ubuntu"
 EMBEDDEDPPA="ppa:p-pisati/embedded"
 KEEP=0
+DEBOOTSTRAP=0
 BASEPKGS="linux-base sudo net-tools vim whois kpartx netcat-openbsd"
 SCRIPTDIR="initramfs-scripts"
 
@@ -353,6 +354,7 @@ Available values for:
 Other options:
 -f  <device>  device installation target
 -k            don't cleanup after exit
+-t            use deboostrap to populate the rootfs
 
 Misc "catch-all" option:
 -o <opt=value[,opt=value, ...]> where:
@@ -388,6 +390,9 @@ while [ $# -gt 0 ]; do
 			;;
 		-k)
 			KEEP=1
+			;;
+		-t)
+			DEBOOTSTRAP=1
 			;;
 		-o)
 			[ "$2" ] || usage
@@ -439,8 +444,10 @@ MACHINE=$(get_field "$BOARD" "machine") || true
 LAYOUT=$(get_field "$BOARD" "layout") || true
 [ -z "$LAYOUT" ] && echo "Error: unknown media layout" && exit 1
 if [ $ARCH = "armhf" ]; then
+	ARCHIVE="http://ports.ubuntu.com"
 	QEMU=$(which qemu-arm-static) || true
 elif [ $ARCH = "i386" ]; then
+	ARCHIVE="http://archive.ubuntu.com/ubuntu"
 	QEMU=$(which qemu-i386-static) || true
 fi
 [ -z $QEMU ] && echo "Error: install the qemu-user-static package" && exit 1
@@ -502,6 +509,7 @@ echo $PASSWD
 echo $KERNEL
 echo $PACKAGES
 echo $SCRIPTS
+echo $DEBOOTSTRAP
 echo "------------"
 
 # end of setup_env_generic()
@@ -522,10 +530,18 @@ layout_device
 # - install rootfs
 echo "== Init System =="
 mount_dev "${ROOTDEVICE}" "${ROOTFSDIR}"
-if [ "${ROOTFS%%:*}" = "http" -o "${ROOTFS%%:*}" = "ftp" ]; then
-	 wget --verbose -O- "${ROOTFS}" | tar zxf - -C "${ROOTFSDIR}"
+if [ "$DEBOOTSTRAP" -eq 0 ]; then
+	if [ "${ROOTFS%%:*}" = "http" -o "${ROOTFS%%:*}" = "ftp" ]; then
+		 wget --verbose -O- "${ROOTFS}" | tar zxf - -C "${ROOTFSDIR}"
+	else
+		tar zxf "${ROOTFS}" -C "${ROOTFSDIR}"
+	fi
 else
-	tar zxf "${ROOTFS}" -C "${ROOTFSDIR}"
+	CODENAME=$(ugetcod "$DISTRO")
+	debootstrap --arch="$ARCH" --variant=minbase --foreign "$CODENAME" "$ROOTFSDIR" "$ARCHIVE"
+	cp "$QEMU" "$ROOTFSDIR/usr/bin"
+	# finish off deboostrap config
+	chroot "$ROOTFSDIR" ./debootstrap/debootstrap --second-stage "$CODENAME" .
 fi
 
 # end of init_system_generic()
