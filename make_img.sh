@@ -568,6 +568,8 @@ do_chroot $ROOTFSDIR useradd $USER -m -p `mkpasswd $PASSWD` -s /bin/bash
 do_chroot $ROOTFSDIR adduser $USER adm
 do_chroot $ROOTFSDIR adduser $USER sudo
 cp skel/interfaces $ROOTFSDIR/etc/network/
+# avoid dynamic naming of the NIC
+do_chroot $ROOTFSDIR touch /etc/udev/rules.d/80-net-setup-link.rules
 echo "$BOARD" > $ROOTFSDIR/etc/hostname
 cp skel/$KERNELCONF $ROOTFSDIR/etc
 
