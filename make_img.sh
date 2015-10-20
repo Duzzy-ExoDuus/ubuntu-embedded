@@ -266,10 +266,10 @@ layout_device()
 		if [ $MPOINT != "SKIP" -a $MPOINT != "BOOTDIR" ]; then
 			MNTOPTS="defaults"
 			FSCK="0"
-			UUID=`blkid ${PHYSDEVICE}${PART} | cut -f2 -d " " | sed 's/"//g'`
+			UUID=`blkid ${PHYSDEVICE}${PART} -s UUID -o value`
 			[ $MPOINT = "/" ] && MNTOPS="errors=remount-ro" && FSCK="1"
 			[ $MPOINT = "/boot" ] && FSCK="2"
-			echo "$UUID	$MPOINT	$FS	$MNTOPTS	0	$FSCK" >> $FSTABFILE
+			echo "UUID=$UUID	$MPOINT	$FS	$MNTOPTS	0	$FSCK" >> $FSTABFILE
 		fi
 	done
 
