@@ -466,6 +466,7 @@ PPA=$(get_field "$BOARD" "ppa") || true
 KERNEL=$(get_field "$BOARD" "kernel") || true
 BPKGS=$(get_field "$BOARD" "packages") || true
 BSCRIPT=$(get_field "$BOARD" "script") || true
+REPOSITORIES=$(get_field "$BOARD" "repositories") || true
 
 # sanitize input params
 [ "$DISTRO" = "$STACK" ] && STACK=""
@@ -599,6 +600,10 @@ do_chroot $ROOTFSDIR apt-get install -y software-properties-common
 do_chroot $ROOTFSDIR add-apt-repository -y ${EMBEDDEDPPA}
 # pin the embedded ppa
 cp skel/embedded-ppa $ROOTFSDIR/etc/apt/preferences.d/
+# add optional repostitories
+for REPO in ${REPOSITORIES}; do
+	do_chroot $ROOTFSDIR add-apt-repository -y ${REPO}
+done
 do_chroot $ROOTFSDIR apt-get update
 # if specified, add a 3rd party PPA
 if [ "${PPA}" ]; then
