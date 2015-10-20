@@ -61,3 +61,12 @@ layout: BOOTDIR,vfat,256M /,ext4,FILL
 bootloaders: ALL
 serial: ttyAMA0
 kernel: linux-bcm2709
+
+board: raspi2
+arch: armhf
+machine: Raspberry Pi 2 Model B
+layout: /boot/firmware,vfat,256M /,ext4,FILL
+serial: ttyAMA0
+repositories: universe
+kernel: linux-raspi2
+packages: raspberrypi2-firmware
