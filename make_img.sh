@@ -559,6 +559,8 @@ while read line; do
 	[ $MPOINT = "/" ] && continue
 	UUID=`echo $line | cut -f1 -d " " | cut -f 2 -d =`
 	DEV=`blkid -U $UUID`
+	# if the mountpoint is a not an existing canonical directory, create it
+	[ ! -d "${ROOTFSDIR}/${MPOINT}" ] && mkdir -p "${ROOTFSDIR}/${MPOINT}"
 	mount_dev "${DEV}" "${ROOTFSDIR}/${MPOINT}"
 done < $FSTABFILE
 
