@@ -542,7 +542,7 @@ else
 fi
 cp "$QEMU" "$ROOTFSDIR/usr/bin"
 # finish off deboostrap config
-[ "$DEBOOTSTRAP" ] && chroot "$ROOTFSDIR" ./debootstrap/debootstrap --second-stage "$CODENAME" .
+[ "$DEBOOTSTRAP" -eq 1 ] && chroot "$ROOTFSDIR" ./debootstrap/debootstrap --second-stage "$CODENAME" .
 cp /etc/resolv.conf $ROOTFSDIR/etc
 do_chroot $ROOTFSDIR apt-get update
 do_chroot $ROOTFSDIR apt-get install -y ifupdown
