@@ -25,18 +25,22 @@ Additional options are available through the help section (./make_img.sh -h):
 usage: make_img.sh -b $BOARD -d $DISTRO [options...]
 
 Available values for:
-$BOARD:  beaglexm panda beaglebone mirabox cubox arndale5250 raspy2 versatile-ca9
-$DISTRO: 14.04 14.10
+$BOARD:  beaglexm panda beaglebone mirabox cubox arndale5250 raspy2 raspi2
+$DISTRO: 14.04 14.10 15.04 15.10
 
 Other options:
 -f  <device>  device installation target
+-k            don't cleanup after exit
+-t            use deboostrap to populate the rootfs
 
 Misc "catch-all" option:
 -o <opt=value[,opt=value, ...]> where:
 
-stack:                  release used for the enablement stack (kernel, bootloader and flask-kernel)
-size:                   size of the image file (e.g. 2G, default: 1G)
-user:                   credentials of the user created on the target image
-passwd:                 same as above, but for the password here
-rootfs                  rootfs tar.gz archive (e.g. ubuntu core), can be local or remote (http/ftp)
+stack:			release used for the enablement stack (kernel, bootloader and flask-kernel)
+size:			size of the image file (e.g. 2G, default: 1G)
+user:			credentials of the user created on the target image
+passwd:			same as above, but for the password here
+pkgs:			install additional pkgs (pkgs="pkg1 pkg2 pkg3...")
+rootfs:			rootfs tar.gz archive (e.g. ubuntu core), can be local or remote (http/ftp)
+script:			initramfs script to be installed
 ```
