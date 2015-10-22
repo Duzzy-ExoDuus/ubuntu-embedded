@@ -10,7 +10,7 @@ sudo ./make_img.sh -b beaglebone -d 14.04
 
 To create an Ubuntu image for the RaspberryPi2:
 
-sudo ./make_img.sh -b raspy2 -d 14.04
+sudo ./make_img.sh -b raspi2 -d 15.10
 
 Serial console: 115200 8N1 - no hardware and software flow control 
 
