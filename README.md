@@ -18,6 +18,10 @@ Default user / password: ubuntu / ubuntu
 
 See 'boards.db' for an up to date list of supported boards.
 
+Prebuilt images are available at:
+
+http://people.canonical.com/~ppisati/ubuntu_embedded/
+
 Additional options are available through the help section (./make_img.sh -h):
 
 ```
