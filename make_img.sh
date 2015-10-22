@@ -349,7 +349,7 @@ usage: $(basename $0) -b \$BOARD -d \$DISTRO [options...]
 
 Available values for:
 \$BOARD: $BOARDS
-\$DISTRO: 14.04 14.10 15.04
+\$DISTRO: 14.04 14.10 15.04 15.10
 
 Other options:
 -f  <device>  device installation target
