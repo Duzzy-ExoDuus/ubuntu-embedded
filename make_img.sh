@@ -71,7 +71,7 @@ TAILPID=$!
 
 exec 3>&1 4>&2 >build.log 2>&1
 
-ARRAY=("14.04:trusty" "14.10:utopic" "15.04:vivid" "15.10:wily")
+ARRAY=("14.04:trusty" "15.04:vivid" "15.10:wily")
 
 ubuntuversion() {
 	local CMD="$1"
@@ -349,7 +349,7 @@ usage: $(basename $0) -b \$BOARD -d \$DISTRO [options...]
 
 Available values for:
 \$BOARD: $BOARDS
-\$DISTRO: 14.04 14.10 15.04 15.10
+\$DISTRO: 14.04 15.04 15.10
 
 Other options:
 -f  <device>  device installation target
