@@ -71,7 +71,7 @@ TAILPID=$!
 
 exec 3>&1 4>&2 >build.log 2>&1
 
-ARRAY=("14.04:trusty" "15.04:vivid" "15.10:wily")
+ARRAY=("14.04:trusty" "15.04:vivid" "15.10:wily" "16.04:xenial")
 
 ubuntuversion() {
 	local CMD="$1"
@@ -545,7 +545,7 @@ cp "$QEMU" "$ROOTFSDIR/usr/bin"
 [ "$DEBOOTSTRAP" -eq 1 ] && chroot "$ROOTFSDIR" ./debootstrap/debootstrap --second-stage "$CODENAME" .
 cp /etc/resolv.conf $ROOTFSDIR/etc
 do_chroot $ROOTFSDIR apt-get update
-do_chroot $ROOTFSDIR apt-get install -y ifupdown
+do_chroot $ROOTFSDIR apt-get install -y ifupdown udev
 
 # end of init_system_generic()
 
