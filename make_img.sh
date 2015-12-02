@@ -649,4 +649,5 @@ echo "== Install Bootloader =="
 bootloader_phase
 
 rm $ROOTFSDIR/usr/sbin/policy-rc.d
+do_chroot $ROOTFSDIR apt-get clean
 [ -e "boards/$BOARD/first_boot.txt" ] && echo -e "\n\n\n\n" && cat "boards/$BOARD/first_boot.txt"
