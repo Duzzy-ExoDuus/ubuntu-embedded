@@ -359,7 +359,6 @@ Other options:
 Misc "catch-all" option:
 -o <opt=value[,opt=value, ...]> where:
 
-stack:			release used for the enablement stack (kernel, bootloader and flask-kernel)
 size:			size of the image file (e.g. 2G, default: 1G)
 user:			credentials of the user created on the target image
 passwd:			same as above, but for the password here
@@ -414,10 +413,6 @@ while [ $# -gt 0 ]; do
 						USRIMGSIZE=`numfmt --from=iec --invalid=ignore $arg`
 						! [[ $USRIMGSIZE =~ ^[0-9]+$ ]] && echo "Error: invalid input \"$arg\"" && exit 1
 						;;
-					"stack")
-						[ -z $(ugetcod "$arg") ] && echo "Error: $arg is not a valid realease" && exit 1
-						STACK="$arg"
-						;;
 					"user") USER="$arg" ;;
 					*)
 						echo "Error: $ARG unknown option" && exit 1
@@ -469,7 +464,6 @@ BSCRIPT=$(get_field "$BOARD" "script") || true
 REPOSITORIES=$(get_field "$BOARD" "repositories") || true
 
 # sanitize input params
-[ "$DISTRO" = "$STACK" ] && STACK=""
 IMGSIZE=${USRIMGSIZE:-$(echo $DEFIMGSIZE)}
 [ "${IMGSIZE}" -lt "${DEFIMGSIZE}" ] && echo "Error: size can't be smaller than `numfmt --from=auto --to=iec ${DEFIMGSIZE}`" && exit 1
 [ "$BPKGS" -o "$MPKGS" ] && PACKAGES="${BPKGS} ${MPKGS}"
@@ -493,7 +487,6 @@ MOUNTFILE=$(mktemp build/embedded-mount.XXXXXX)
 echo "Summary: "
 echo $BOARD
 echo $DISTRO
-echo $STACK
 echo $BOOTDIR
 echo $ROOTFSDIR
 echo $FSTABFILE
@@ -590,12 +583,6 @@ chmod +x $ROOTFSDIR/usr/sbin/policy-rc.d
 # - apply all custom patches
 # - run flash-kernel as last step
 echo "== Install pkgs =="
-if [ "${STACK}" ]; then
-	DCOD=$(ugetcod "${DISTRO}")
-	SCOD=$(ugetcod "${STACK}")
-	sed "s/${DCOD}/${SCOD}/g" $ROOTFSDIR/etc/apt/sources.list > $ROOTFSDIR/etc/apt/sources.list.d/${SCOD}.list
-	sed -e "s/STACK/${SCOD}/g" -e "s/DISTRO/${DCOD}/g" skel/apt.preferences > $ROOTFSDIR/etc/apt/preferences.d/enablement-stack.${SCOD}
-fi
 # install the corresponding src repositories
 awk '$1 ~ /deb/{sub(/deb/, "&-src");print}' $ROOTFSDIR/etc/apt/sources.list >> $ROOTFSDIR/etc/apt/sources.list
 do_chroot $ROOTFSDIR apt-get update
