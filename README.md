@@ -33,14 +33,12 @@ $BOARD:  beaglexm panda beaglebone mirabox cubox arndale5250 raspi2
 $DISTRO: 14.04 15.04 15.10
 
 Other options:
--f  <device>  device installation target
 -k            don't cleanup after exit
 -t            use deboostrap to populate the rootfs
 
 Misc "catch-all" option:
 -o <opt=value[,opt=value, ...]> where:
 
-stack:			release used for the enablement stack (kernel, bootloader and flask-kernel)
 size:			size of the image file (e.g. 2G, default: 1G)
 user:			credentials of the user created on the target image
 passwd:			same as above, but for the password here
