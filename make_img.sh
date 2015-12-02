@@ -54,7 +54,7 @@ PASSWD="ubuntu"
 EMBEDDEDPPA="ppa:p-pisati/embedded"
 KEEP=0
 DEBOOTSTRAP=0
-BASEPKGS="linux-base sudo net-tools vim whois kpartx netcat-openbsd"
+BASEPKGS="linux-base sudo net-tools vim whois kpartx netcat-openbsd openssh-server avahi-daemon"
 SCRIPTDIR="initramfs-scripts"
 
 BOARD=
