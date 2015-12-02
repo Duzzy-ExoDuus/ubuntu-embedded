@@ -206,14 +206,9 @@ layout_device()
 	echo "== Layout device =="
 	local BOOTPART=
 	local ROOTPART=
-	if [ -b "$DEVICE" ]; then
-		# wipe partitions table&c
-		dd if=/dev/zero of=${DEVICE} bs=1M count=1
-	else
-		# create a new img file
-		rm -f "$DEVICE"
-		truncate -s ${IMGSIZE} ${DEVICE} 
-	fi
+	# create a new img file
+	rm -f "$DEVICE"
+	truncate -s ${IMGSIZE} ${DEVICE} 
 
 	# 1) create partitions
 	echo "1) Creating partitions..."
@@ -242,15 +237,10 @@ layout_device()
 	echo "ROOTPART: $ROOTPART BOOTPART: ${BOOTPART:-null}"
 
 	# 2) make filesystems & assemble fstab
-	if [ ! -b "$DEVICE" ]; then
-		$KPARTX -a "$DEVICE"
-		LOOP=$(losetup -a | grep $DEVICE | cut -f1 -d: | cut -f3 -d/)
-		PHYSDEVICE="/dev/mapper/${LOOP}p"
-		BOOTLOADERDEVICE="/dev/${LOOP}"
-	else
-		PHYSDEVICE="${DEVICE}"
-		BOOTLOADERDEVICE="${DEVICE}"
-	fi
+	$KPARTX -a "$DEVICE"
+	LOOP=$(losetup -a | grep $DEVICE | cut -f1 -d: | cut -f3 -d/)
+	PHYSDEVICE="/dev/mapper/${LOOP}p"
+	BOOTLOADERDEVICE="/dev/${LOOP}"
 	echo "2) Making filesystems..."
 	PART=0
 	for i in $LAYOUT; do
@@ -351,7 +341,6 @@ Available values for:
 \$DISTRO: 14.04 15.04 15.10
 
 Other options:
--f  <device>  device installation target
 -k            don't cleanup after exit
 -t            use deboostrap to populate the rootfs
 
@@ -381,10 +370,6 @@ while [ $# -gt 0 ]; do
 		-d)
 			[ -n "$2" ] && DISTRO=$2 && shift || usage
 			[ -z $(ugetcod "$DISTRO") ] && echo "Error: $DISTRO is not a valid input" && exit 1
-			;;
-		-f)
-			[ -n "$2" ] && DEVICE=$2 && shift || usage
-			[ ! -b "$DEVICE" ] && echo "Error: $DEVICE is not a real device" && exit 1
 			;;
 		-k)
 			KEEP=1
@@ -476,7 +461,7 @@ fi
 # final environment setup
 trap cleanup 0 1 2 3 9 15
 KERNEL=${KERNEL:-linux-image-generic}
-DEVICE=${DEVICE:-ubuntu-embedded-$DISTRO-$BOARD.img}
+DEVICE="ubuntu-embedded-$DISTRO-$BOARD.img"
 ROOTFS="${UROOTFS:-http://cdimage.ubuntu.com/ubuntu-core/releases/$DISTRO/release/ubuntu-core-$DISTRO-core-$ARCH.tar.gz}"
 ROOTFSDIR=$(mktemp -d build/embedded-rootfs.XXXXXX)
 BOOTDIR=$(mktemp -d build/embedded-boot.XXXXXX)
