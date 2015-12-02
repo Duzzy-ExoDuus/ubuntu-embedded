@@ -24,7 +24,6 @@
 #
 # - multiple ppa support
 # - kernel and bootloader selection support
-# - deboostrap vs ubuntu core support
 # - arch support (arm64? amd64? i386?)
 # - autoresize at first boot
 #
