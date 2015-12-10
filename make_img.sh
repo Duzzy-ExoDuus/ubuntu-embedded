@@ -568,7 +568,7 @@ chmod +x $ROOTFSDIR/usr/sbin/policy-rc.d
 # - run flash-kernel as last step
 echo "== Install pkgs =="
 # install the corresponding src repositories
-awk '$1 ~ /deb/{sub(/deb/, "&-src");print}' $ROOTFSDIR/etc/apt/sources.list >> $ROOTFSDIR/etc/apt/sources.list
+awk '$1 ~ /^deb$/{sub(/deb/, "&-src");print}' $ROOTFSDIR/etc/apt/sources.list >> $ROOTFSDIR/etc/apt/sources.list
 do_chroot $ROOTFSDIR apt-get update
 # the embedded PPA is mandatory
 do_chroot $ROOTFSDIR apt-get install -y software-properties-common
