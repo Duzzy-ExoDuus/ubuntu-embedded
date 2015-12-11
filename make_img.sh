@@ -541,7 +541,7 @@ while read line; do
 	mount_dev "${DEV}" "${ROOTFSDIR}/${MPOINT}"
 done < $FSTABFILE
 
-cp /etc/hosts $ROOTFSDIR/etc
+cp skel/hosts $ROOTFSDIR/etc
 cp $FSTABFILE $ROOTFSDIR/etc/fstab
 [ -n $SERIAL ] && sed "s/ttyX/$SERIAL/g" skel/serial.conf > $ROOTFSDIR/etc/init/${SERIAL}.conf
 do_chroot $ROOTFSDIR useradd $USER -m -p `mkpasswd $PASSWD` -s /bin/bash
