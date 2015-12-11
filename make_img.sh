@@ -471,7 +471,11 @@ fi
 
 # final environment setup
 trap cleanup 0 1 2 3 9 15
-COMPLETEVER=$(ubunturecentversion $ARCH $DISTRO)
+if [ $DEBOOTSTRAP -eq 1 ]; then
+	COMPLETEVER=$DISTRO
+else
+	COMPLETEVER=$(ubunturecentversion $ARCH $DISTRO)
+fi
 KERNEL=${KERNEL:-linux-image-generic}
 DEVICE="ubuntu-embedded-$COMPLETEVER-$BOARD.img"
 ROOTFS="${UROOTFS:-http://cdimage.ubuntu.com/ubuntu-core/releases/$DISTRO/release/ubuntu-core-$COMPLETEVER-core-$ARCH.tar.gz}"
