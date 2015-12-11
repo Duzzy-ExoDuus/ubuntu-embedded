@@ -533,6 +533,9 @@ cp "$QEMU" "$ROOTFSDIR/usr/bin"
 # finish off deboostrap config
 [ "$DEBOOTSTRAP" -eq 1 ] && chroot "$ROOTFSDIR" ./debootstrap/debootstrap --second-stage "$CODENAME" .
 cp /etc/resolv.conf $ROOTFSDIR/etc
+# prevent demon from starting inside the chroot
+cp skel/policy-rc.d $ROOTFSDIR/usr/sbin/
+chmod +x $ROOTFSDIR/usr/sbin/policy-rc.d
 do_chroot $ROOTFSDIR apt-get update
 do_chroot $ROOTFSDIR apt-get install -y ifupdown udev
 
@@ -564,10 +567,6 @@ cp skel/interfaces $ROOTFSDIR/etc/network/
 do_chroot $ROOTFSDIR touch /etc/udev/rules.d/80-net-setup-link.rules
 echo "$BOARD" > $ROOTFSDIR/etc/hostname
 cp skel/$KERNELCONF $ROOTFSDIR/etc
-
-# prevent demon from starting inside the chroot
-cp skel/policy-rc.d $ROOTFSDIR/usr/sbin/
-chmod +x $ROOTFSDIR/usr/sbin/policy-rc.d
 
 # install per board custom rootfs files if present
 [ -d "boards/$BOARD/rootfs" ] && cp -rv boards/$BOARD/rootfs/* "$ROOTFSDIR"
