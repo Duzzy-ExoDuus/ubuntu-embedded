@@ -12,6 +12,10 @@ To create an Ubuntu image for the RaspberryPi2:
 
 sudo ./make_img.sh -b raspi2 -d 15.10
 
+or if you prefer a bleeding edge Xenial image:
+
+sudo ./make_img.sh -b raspi2 -d 16.04 -t
+
 Serial console: 115200 8N1 - no hardware and software flow control 
 
 Default user / password: ubuntu / ubuntu
@@ -30,7 +34,7 @@ usage: make_img.sh -b $BOARD -d $DISTRO [options...]
 
 Available values for:
 $BOARD:  beaglexm panda beaglebone mirabox cubox arndale5250 raspi2
-$DISTRO: 14.04 15.04 15.10
+$DISTRO: 14.04 15.04 15.10 16.04
 
 Other options:
 -k            don't cleanup after exit
