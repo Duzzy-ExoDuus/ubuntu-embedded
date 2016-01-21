@@ -445,6 +445,7 @@ KPARTX=$(which kpartx) || true
 [ -z $KPARTX ] && echo "Error: install the kpartx package" && exit 1
 MKPASSWD=$(which mkpasswd) || true
 [ -z $MKPASSWD ] && echo "Error: install the whois package" && exit 1
+[ -z `which debootstrap` ] && echo "Error: install the debootstrap package" && exit 1
 [ $(id -u) -ne 0 ] && echo "Error: run me with sudo!" && exit 1
 
 # optional parameters
