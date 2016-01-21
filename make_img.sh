@@ -349,7 +349,7 @@ usage: $(basename $0) -b \$BOARD -d \$DISTRO [options...]
 
 Available values for:
 \$BOARD: $BOARDS
-\$DISTRO: 14.04 15.04 15.10
+\$DISTRO: 14.04 15.04 15.10 16.04
 
 Other options:
 -k            don't cleanup after exit
