@@ -62,3 +62,11 @@ serial: ttyAMA0
 repositories: universe
 kernel: linux-raspi2
 packages: raspberrypi2-firmware
+
+board: dragon410c
+arch: arm64
+machine: Qualcomm Technologies, Inc. APQ 8016 SBC
+layout: /boot/firmware,vfat,256M /,ext4,FILL
+serial: ttyMSM0
+kernel: linux-image-4.4.0-1004-snapdragon
+packages: dragon410c-firmware
