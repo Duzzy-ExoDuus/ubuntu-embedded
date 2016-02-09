@@ -427,19 +427,28 @@ done
 # mandatory checks
 [ -z "$BOARD" -o -z "$DISTRO" ] && usage
 # XXX check if $BOARD is known
-# XXX check for a supported ARCH?
 ARCH=$(get_field "$BOARD" "arch") || true
+case "$ARCH" in
+	arm64)
+		ARCHIVE="http://ports.ubuntu.com"
+		QEMU=$(which qemu-aarch64-static) || true
+		;;
+	armhf)
+		ARCHIVE="http://ports.ubuntu.com"
+		QEMU=$(which qemu-arm-static) || true
+		;;
+	i386)
+		ARCHIVE="http://archive.ubuntu.com/ubuntu"
+		QEMU=$(which qemu-i386-static) || true
+		;;
+	*)
+		echo "Error: Unsupported architecture: $ARCH"
+		exit 1
+esac
 MACHINE=$(get_field "$BOARD" "machine") || true
 [ -z "$MACHINE" ] && echo "Error: unknown machine string" && exit 1
 LAYOUT=$(get_field "$BOARD" "layout") || true
 [ -z "$LAYOUT" ] && echo "Error: unknown media layout" && exit 1
-if [ $ARCH = "armhf" ]; then
-	ARCHIVE="http://ports.ubuntu.com"
-	QEMU=$(which qemu-arm-static) || true
-elif [ $ARCH = "i386" ]; then
-	ARCHIVE="http://archive.ubuntu.com/ubuntu"
-	QEMU=$(which qemu-i386-static) || true
-fi
 [ -z $QEMU ] && echo "Error: install the qemu-user-static package" && exit 1
 KPARTX=$(which kpartx) || true
 [ -z $KPARTX ] && echo "Error: install the kpartx package" && exit 1
@@ -609,7 +618,7 @@ do_chroot $ROOTFSDIR apt-get -y install ${KERNEL} ${BASEPKGS}
 unset FLASH_KERNEL_SKIP
 
 # flash-kernel-specific-bits - XXX shouldn't we do a better check?
-if [ $ARCH = "armhf" ]; then
+if [ $ARCH = "armhf" -o $ARCH = "arm64" ]; then
 	do_chroot $ROOTFSDIR apt-get -y install u-boot-tools flash-kernel
 	do_chroot $ROOTFSDIR flash-kernel --machine "$MACHINE" --nobootdevice
 	[ "${UENV}" ] && cp skel/"uEnv.${UENV}" $ROOTFSDIR/boot/uEnv.txt
