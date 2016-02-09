@@ -446,6 +446,8 @@ KPARTX=$(which kpartx) || true
 MKPASSWD=$(which mkpasswd) || true
 [ -z $MKPASSWD ] && echo "Error: install the whois package" && exit 1
 [ -z `which debootstrap` ] && echo "Error: install the debootstrap package" && exit 1
+SGDISK=$(which sgdisk) || true
+[ -z $SGDISK ] && echo "Error: install the gdisk package" && exit 1
 [ $(id -u) -ne 0 ] && echo "Error: run me with sudo!" && exit 1
 
 # optional parameters
