@@ -328,7 +328,7 @@ gpt_layout_device() {
 }
 
 
-bootloader_phase()
+vanilla_bootchain()
 {
 	# 1) if there's a $BOOTDEVICE defined, mount it
 	# 	a) if there's a uEnv.txt in /boot, move it to $BOOTDIR
@@ -386,6 +386,11 @@ bootloader_phase()
 			cp -vR $SCRIPTDIR/$script/BOOTDIR/* "$BOOTDIR"
 		done
 	fi
+}
+
+fastboot_bootchain()
+{
+	echo "fastboot_bootchain()"
 }
 
 BOARDS="$(get_all_fields "board")"
@@ -497,6 +502,8 @@ MACHINE=$(get_field "$BOARD" "machine") || true
 [ -z "$MACHINE" ] && echo "Error: unknown machine string" && exit 1
 PTABLE=$(get_field "$BOARD" "ptable") || true
 [ -z "$PTABLE" ] && echo "Error: unknown partition table" && exit 1
+BOOTLOADER=$(get_field "$BOARD" "bootloader") || true
+[ -z "$BOOTLOADER" ] && echo "Error: unknown bootloader chain" && exit 1
 [ -z $QEMU ] && echo "Error: install the qemu-user-static package" && exit 1
 KPARTX=$(which kpartx) || true
 [ -z $KPARTX ] && echo "Error: install the kpartx package" && exit 1
@@ -692,7 +699,7 @@ fi
 # - install bootloaders
 echo "== Install Bootloader =="
 # XXX so far, this part is relevant only in case we use uboot
-bootloader_phase
+${bootloader}_bootchain
 
 rm $ROOTFSDIR/usr/sbin/policy-rc.d
 do_chroot $ROOTFSDIR apt-get clean
