@@ -1,6 +1,7 @@
 board: beaglexm
 arch: armhf
 machine: OMAP3 Beagle Board
+ptable: mbr
 layout: BOOTDIR,vfat,256M /,ext4,FILL
 uenv: generic
 uboot-prefix: omap3_beagle
@@ -10,6 +11,7 @@ serial: ttyO2
 board: panda
 arch: armhf
 machine: OMAP4 Panda board
+ptable: mbr
 layout: BOOTDIR,vfat,256M /,ext4,FILL
 uenv: generic
 uboot-prefix: omap4_panda
@@ -19,6 +21,7 @@ serial: ttyO2
 board: beaglebone
 arch: armhf
 machine: TI AM335x BeagleBone
+ptable: mbr
 layout: BOOTDIR,vfat,256M /,ext4,FILL
 uenv: generic
 uboot-prefix: am335x_boneblack
@@ -35,12 +38,14 @@ machine: Globalscale Mirabox
 # size could be any of ...MB or FILL
 # XXX the bootloader shipped with this board is CRAP!!!
 #layout: /boot,ext2,256M /,ext4,FILL
+ptable: mbr
 layout: BOOTDIR,vfat,256M /,ext4,FILL
 serial: ttyS0
 
 board: cubox
 arch: armhf
 machine: SolidRun i.MX 6Quad/Dual/DualLite/Solo CuBox-i Board
+ptable: mbr
 layout: /,ext4,FILL
 uboot-prefix: mx6_cubox-i
 bootloaders: SPL:2 u-boot.img:84
@@ -50,6 +55,7 @@ serial: ttymxc0
 board: arndale5250
 arch: armhf
 machine: Insignal Arndale evaluation board based on EXYNOS5250
+ptable: mbr
 layout: /boot,ext2,256M /,ext4,FILL
 bootloaders: arndale-bl1.bin:1 smdk5250-spl.bin:17 u-boot.bin:49
 serial: ttySAC2
@@ -57,6 +63,7 @@ serial: ttySAC2
 board: raspi2
 arch: armhf
 machine: Raspberry Pi 2 Model B
+ptable: mbr
 layout: /boot/firmware,vfat,256M /,ext4,FILL
 serial: ttyAMA0
 repositories: universe
@@ -66,7 +73,7 @@ packages: raspberrypi2-firmware
 board: dragon410c
 arch: arm64
 machine: Qualcomm Technologies, Inc. APQ 8016 SBC
-layout: /boot/firmware,vfat,256M /,ext4,FILL
+ptable: gpt
 serial: ttyMSM0
 kernel: linux-image-4.4.0-1004-snapdragon
 packages: dragon410c-firmware

@@ -208,11 +208,16 @@ cleanup()
 	fi
 }
 
-layout_device()
+mbr_layout_device()
 {
 	echo "== Layout device =="
 	local BOOTPART=
 	local ROOTPART=
+	local LAYOUT=
+
+	LAYOUT=$(get_field "$BOARD" "layout") || true
+	[ -z "$LAYOUT" ] && echo "Error: unknown media layout" && exit 1
+
 	# create a new img file
 	rm -f "$DEVICE"
 	truncate -s ${IMGSIZE} ${DEVICE} 
@@ -277,6 +282,53 @@ layout_device()
 	[ ${BOOTPART} ] && BOOTDEVICE="${PHYSDEVICE}${BOOTPART}"
 	ROOTDEVICE="${PHYSDEVICE}${ROOTPART}"
 	echo "ROOTDEVICE: $ROOTDEVICE BOOTDEVICE: ${BOOTDEVICE:-null}"
+}
+
+gpt_layout_device() {
+	# create a new img file
+	rm -f "$DEVICE"
+	truncate -s $IMGSIZE "$DEVICE"
+
+	# 1) create partitions
+	echo "1) Creating partitions..."
+	local PART=1
+	while read mpoint fs size name type; do
+		[[ $mpoint =~ ^#.* ]] && continue
+		echo "mpoint: $mpoint fs: $fs size: $size name: $name type: $type"
+		[ $size = "FILL" ] && size="" || size="+$size"
+		[ $mpoint = "/" ] && ROOTPART=$PART
+		sgdisk -a 1 -n 0:0:$size "$DEVICE"
+		[ $name -a $name != "NULL" ] && sgdisk -c $PART:$name "$DEVICE"
+		[ $fs = "vfat" -a $type = "NULL" ] && type="0700" # GPT's vfat partition
+		[ $type -a $type != "NULL" ] && sgdisk -t $PART:$type "$DEVICE"
+		PART=$((PART+1))
+	done < "boards/$BOARD/parts.txt"
+
+	# 2) make filesystems & assemble fstab
+	$KPARTX -asv "$DEVICE"
+	LOOP=$(losetup -a | grep $DEVICE | cut -f1 -d: | cut -f3 -d/)
+	PHYSDEVICE="/dev/mapper/${LOOP}p"
+	echo "2) Making filesystems..."
+	PART=0
+	while read mpoint fs size name type; do
+		[[ $mpoint =~ ^#.* ]] && continue
+		echo "mpoint: $mpoint fs: $fs size: $size name: $name type: $type"
+		PART=$((PART+1))
+		[ $fs = "NULL" ] && continue
+		mkfs.${fs} ${PHYSDEVICE}${PART}
+		if [ $mpoint != "NULL" ]; then
+			mntopts="defaults"
+			fsck="0"
+			uuid=`blkid ${PHYSDEVICE}${PART} -s UUID -o value`
+			[ $mpoint = "/" ] && mntopts="errors=remount-ro" && fsck="1"
+			[ $mpoint = "/boot" ] && fsck="2"
+			echo "UUID=$uuid $mpoint $fs $mntopts 0 $fsck" >> $FSTABFILE
+		fi
+	done < "boards/$BOARD/parts.txt"
+
+	# 3) final assignment
+	ROOTDEVICE="$PHYSDEVICE$ROOTPART"
+	echo "ROOTDEVICE: $ROOTDEVICE"
 }
 
 
@@ -447,8 +499,8 @@ case "$ARCH" in
 esac
 MACHINE=$(get_field "$BOARD" "machine") || true
 [ -z "$MACHINE" ] && echo "Error: unknown machine string" && exit 1
-LAYOUT=$(get_field "$BOARD" "layout") || true
-[ -z "$LAYOUT" ] && echo "Error: unknown media layout" && exit 1
+PTABLE=$(get_field "$BOARD" "ptable") || true
+[ -z "$PTABLE" ] && echo "Error: unknown partition table" && exit 1
 [ -z $QEMU ] && echo "Error: install the qemu-user-static package" && exit 1
 KPARTX=$(which kpartx) || true
 [ -z $KPARTX ] && echo "Error: install the kpartx package" && exit 1
@@ -507,7 +559,7 @@ echo $UBOOTPREF
 echo $BOOTLOADERS
 echo $DEVICE
 echo $ROOTFS
-echo $LAYOUT
+echo $PTABLE
 echo $IMGSIZE
 echo $USER
 echo $PASSWD
@@ -525,7 +577,7 @@ echo "------------"
 # - mkfs
 # - create the fstab file
 # - properly assign ROOTDEVICE and (optionally) BOOTDEVICE
-layout_device
+${PTABLE}_layout_device
 
 # end of prepare_media_generic()
 
