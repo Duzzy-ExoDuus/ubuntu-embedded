@@ -1,0 +1,8 @@
+# PARTITION	BINARY OFFSET
+1 sbl1.mbn 0
+2 rpm.mbn 0
+3 tz.mbn 0
+4 hyp.mbn 0
+5 sec.dat 0
+6 sd_appsboot.mbn 0
+7 u-boot.bin 0
