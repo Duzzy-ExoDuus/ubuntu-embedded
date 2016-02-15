@@ -390,7 +390,14 @@ vanilla_bootchain()
 
 fastboot_bootchain()
 {
-	echo "fastboot_bootchain()"
+	LOOP=$(losetup -a | grep $DEVICE | cut -f1 -d: | cut -f3 -d/)
+	PHYSDEVICE="/dev/mapper/${LOOP}p"
+	PREFIX="boards/$BOARD/bootloaders/"
+	while read part binary offset; do
+		[[ $part =~ ^#.* ]] && continue
+		echo "part: $part binary: $binary off: $offset"
+		dd if=${PREFIX}${binary} of=${PHYSDEVICE}${part} seek=$offset
+	done < "boards/$BOARD/bootchain.txt"
 }
 
 BOARDS="$(get_all_fields "board")"
@@ -699,7 +706,7 @@ fi
 # - install bootloaders
 echo "== Install Bootloader =="
 # XXX so far, this part is relevant only in case we use uboot
-${bootloader}_bootchain
+${BOOTLOADER}_bootchain
 
 rm $ROOTFSDIR/usr/sbin/policy-rc.d
 do_chroot $ROOTFSDIR apt-get clean
