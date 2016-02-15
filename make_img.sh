@@ -295,7 +295,9 @@ gpt_layout_device() {
 		[ $mpoint = "/" ] && ROOTPART=$PART
 		sgdisk -a 1 -n 0:0:$size "$DEVICE"
 		[ $name -a $name != "NULL" ] && sgdisk -c $PART:$name "$DEVICE"
-		[ $fs = "vfat" -a $type = "NULL" ] && type="0700" # GPT's vfat partition
+		[ $fs = "fat" -a $type = "NULL" ] && type="0700" # GPT's fat partition
+		[ $fs = "msdos" -a $type = "NULL" ] && type="0700"
+		[ $fs = "vfat" -a $type = "NULL" ] && type="0700"
 		[ $type -a $type != "NULL" ] && sgdisk -t $PART:$type "$DEVICE"
 		PART=$((PART+1))
 	done < "boards/$BOARD/parts.txt"
