@@ -1,14 +1,15 @@
 # UBUNTU for Embedded Systems
 
-Tool to create Ubuntu images for embedded systems (mainly arm boards like the Beaglebone or the Raspberry Pi 2).
+Tool to create Ubuntu images for embedded systems (mainly arm / arm64 boards
+like the Beaglebone, the RaspberryPi 2 or the 96Boards DragonBoard 410c).
 
 **Crash course**
 
-To create an Ubuntu image for the Beaglebone Black:
+To build an image for the Beaglebone Black:
 
 sudo ./make_img.sh -b beaglebone -d 14.04
 
-To create an Ubuntu image for the RaspberryPi2:
+For the RaspberryPi 2:
 
 sudo ./make_img.sh -b raspi2 -d 15.10
 
@@ -37,7 +38,7 @@ Additional options are available through the help section (./make_img.sh -h):
 usage: make_img.sh -b $BOARD -d $DISTRO [options...]
 
 Available values for:
-$BOARD:  beaglexm panda beaglebone mirabox cubox arndale5250 raspi2
+$BOARD:  beaglexm panda beaglebone mirabox cubox arndale5250 raspi2 dragon410c
 $DISTRO: 14.04 15.04 15.10 16.04
 
 Other options:
