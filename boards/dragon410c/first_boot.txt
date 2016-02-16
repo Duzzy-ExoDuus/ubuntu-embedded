@@ -1,0 +1,7 @@
+==== IMPORTANT MESSAGE, PLEASE READ IT ====
+
+Flip the DragonBoard410c and set the "SD Boot" dip switch to ON, dd the image
+to a micro sd card, pop it into the micro sd slot and apply power.
+
+That's it, you successfully completed the installation of Ubuntu for your
+DragonBoard 410c, enjoy it!
