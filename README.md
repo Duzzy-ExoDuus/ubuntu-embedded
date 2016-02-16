@@ -16,6 +16,10 @@ or if you prefer a bleeding edge Xenial image:
 
 sudo ./make_img.sh -b raspi2 -d 16.04 -t
 
+To create an Ubuntu image for the 96Boards DragonBoard 410c:
+
+sudo ./make_img.sh -b dragon410c -d 16.04 -t
+
 Serial console: 115200 8N1 - no hardware and software flow control 
 
 Default user / password: ubuntu / ubuntu
