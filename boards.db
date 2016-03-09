@@ -77,6 +77,17 @@ repositories: universe
 kernel: linux-raspi2
 packages: raspberrypi2-firmware
 
+board: raspi3
+arch: armhf
+machine: Raspberry Pi 3 Model B Rev 1.2
+ptable: mbr
+layout: /boot/firmware,vfat,256M /,ext4,FILL
+bootloader: vanilla
+serial: ttyAMA0
+repositories: universe
+kernel: linux-raspi2
+packages: raspberrypi2-firmware
+
 board: dragon410c
 arch: arm64
 machine: Qualcomm Technologies, Inc. APQ 8016 SBC
