@@ -86,7 +86,7 @@ bootloader: vanilla
 serial: ttyAMA0
 repositories: universe
 kernel: linux-raspi2
-packages: raspberrypi2-firmware
+packages: raspberrypi3-firmware
 
 board: dragon410c
 arch: arm64
