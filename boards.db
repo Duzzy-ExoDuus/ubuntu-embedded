@@ -96,3 +96,12 @@ bootloader: fastboot
 serial: ttyMSM0
 kernel: linux-image-4.4.0-1004-snapdragon
 packages: dragon410c-firmware
+
+board: odroidc2
+arch: arm64
+machine: Dummy Virtual Machine
+ptable: mbr
+layout: /boot/firmware,vfat,256M /,ext4,FILL
+bootloader: vanilla
+bootloaders: bl1.bin.hardkernel:1 u-boot.bin:97
+serial: ttyS0
