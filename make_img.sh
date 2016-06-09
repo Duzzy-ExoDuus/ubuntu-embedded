@@ -99,7 +99,7 @@ ubunturecentversion() {
 	local ARCH="$1"
 	local DISTRO="$2"
 
-	wget -O- http://cdimage.ubuntu.com/ubuntu-core/releases/$DISTRO/release/MD5SUMS | sed -n "s/^[[:xdigit:]]*[[:space:]]*\*ubuntu-core-\([^-]*\)-core-$ARCH.tar.gz$/\1/p" | sort -V | tail -n 1
+	wget -O- http://cdimage.ubuntu.com/ubuntu-base/releases/$DISTRO/release/MD5SUMS | sed -n "s/^[[:xdigit:]]*[[:space:]]*\*ubuntu-core-\([^-]*\)-core-$ARCH.tar.gz$/\1/p" | sort -V | tail -n 1
 }
 
 ugetrel()
