@@ -52,7 +52,6 @@ USER="ubuntu"
 PASSWD="ubuntu"
 EMBEDDEDPPA="ppa:p-pisati/embedded"
 KEEP=0
-DEBOOTSTRAP=0
 BASEPKGS="linux-base sudo net-tools vim whois kpartx netcat-openbsd openssh-server avahi-daemon"
 SCRIPTDIR="initramfs-scripts"
 
@@ -93,13 +92,6 @@ ubuntuversion() {
 		fi
 	done
 	echo "${RET}"
-}
-
-ubunturecentversion() {
-	local ARCH="$1"
-	local DISTRO="$2"
-
-	wget -O- http://cdimage.ubuntu.com/ubuntu-base/releases/$DISTRO/release/MD5SUMS | sed -n "s/^[[:xdigit:]]*[[:space:]]*\*ubuntu-core-\([^-]*\)-core-$ARCH.tar.gz$/\1/p" | sort -V | tail -n 1
 }
 
 ugetrel()
@@ -415,7 +407,6 @@ Available values for:
 
 Other options:
 -k            don't cleanup after exit
--t            use deboostrap to populate the rootfs
 
 Misc "catch-all" option:
 -o <opt=value[,opt=value, ...]> where:
@@ -424,7 +415,6 @@ size:			size of the image file (e.g. 2G, default: 1G)
 user:			credentials of the user created on the target image
 passwd:			same as above, but for the password here
 pkgs:			install additional pkgs (pkgs="pkg1 pkg2 pkg3...")
-rootfs:			rootfs tar.gz archive (e.g. ubuntu core), can be local or remote (http/ftp)
 script:			initramfs script to be installed
 EOF
 	exit 1
@@ -446,9 +436,6 @@ while [ $# -gt 0 ]; do
 			;;
 		-k)
 			KEEP=1
-			;;
-		-t)
-			DEBOOTSTRAP=1
 			;;
 		-o)
 			[ "$2" ] || usage
@@ -547,14 +534,9 @@ fi
 
 # final environment setup
 trap cleanup 0 1 2 3 9 15
-if [ $DEBOOTSTRAP -eq 1 ]; then
-	COMPLETEVER=$DISTRO
-else
-	COMPLETEVER=$(ubunturecentversion $ARCH $DISTRO)
-fi
 KERNEL=${KERNEL:-linux-image-generic}
-DEVICE="ubuntu-embedded-$COMPLETEVER-$BOARD.img"
-ROOTFS="${UROOTFS:-http://cdimage.ubuntu.com/ubuntu-core/releases/$DISTRO/release/ubuntu-core-$COMPLETEVER-core-$ARCH.tar.gz}"
+DEVICE="ubuntu-embedded-$DISTRO-$BOARD.img"
+ROOTFS="${UROOTFS:-http://cdimage.ubuntu.com/ubuntu-core/releases/$DISTRO/release/ubuntu-core-$DISTRO-core-$ARCH.tar.gz}"
 ROOTFSDIR=$(mktemp -d build/embedded-rootfs.XXXXXX)
 BOOTDIR=$(mktemp -d build/embedded-boot.XXXXXX)
 FSTABFILE=$(mktemp build/embedded-fstab.XXXXXX)
@@ -578,7 +560,6 @@ echo $PASSWD
 echo $KERNEL
 echo $PACKAGES
 echo $SCRIPTS
-echo $DEBOOTSTRAP
 echo "------------"
 
 # end of setup_env_generic()
@@ -599,19 +580,11 @@ ${PTABLE}_layout_device
 # - install rootfs
 echo "== Init System =="
 mount_dev "${ROOTDEVICE}" "${ROOTFSDIR}"
-if [ "$DEBOOTSTRAP" -eq 0 ]; then
-	if [ "${ROOTFS%%:*}" = "http" -o "${ROOTFS%%:*}" = "ftp" ]; then
-		 wget --verbose -O- "${ROOTFS}" | tar zxf - -C "${ROOTFSDIR}"
-	else
-		tar zxf "${ROOTFS}" -C "${ROOTFSDIR}"
-	fi
-else
-	CODENAME=$(ugetcod "$DISTRO")
-	debootstrap --arch="$ARCH" --variant=minbase --foreign "$CODENAME" "$ROOTFSDIR" "$ARCHIVE"
-fi
+CODENAME=$(ugetcod "$DISTRO")
+debootstrap --arch="$ARCH" --variant=minbase --foreign "$CODENAME" "$ROOTFSDIR" "$ARCHIVE"
 cp "$QEMU" "$ROOTFSDIR/usr/bin"
 # finish off deboostrap config
-[ "$DEBOOTSTRAP" -eq 1 ] && chroot "$ROOTFSDIR" ./debootstrap/debootstrap --second-stage "$CODENAME" .
+chroot "$ROOTFSDIR" ./debootstrap/debootstrap --second-stage "$CODENAME" .
 cp /etc/resolv.conf $ROOTFSDIR/etc
 # prevent demon from starting inside the chroot
 cp skel/policy-rc.d $ROOTFSDIR/usr/sbin/
