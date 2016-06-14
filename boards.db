@@ -95,7 +95,7 @@ ptable: mbr
 layout: /boot/firmware,vfat,256M /,ext4,FILL
 bootloader: vanilla
 repositories: universe
-kernel: linux-generic
+kernel: linux-raspi64
 
 board: dragon410c
 arch: arm64
