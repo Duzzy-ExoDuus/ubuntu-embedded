@@ -23,11 +23,11 @@ To build a Xenial image for the RaspberryPi 2:
 
 sudo ./make_img.sh -b raspi2
 
-Or for the RaspberryPi 3 **_EXPERIMENTAL_**:
+Or for the RaspberryPi 3 **_(EXPERIMENTAL)_**:
 
 sudo ./make_img.sh -b raspi3
 
-To build an arm64 Xenial image for the RaspberryPi3 **_EXPERIMENTAL_**:
+To build an arm64 Xenial image for the RaspberryPi3 **_(EXPERIMENTAL)_**:
 
 sudo ./make_img.sh -b raspi3
 
