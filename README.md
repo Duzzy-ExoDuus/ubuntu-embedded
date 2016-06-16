@@ -56,7 +56,7 @@ $BOARD:  beaglexm panda beaglebone mirabox cubox raspi2 raspi3 raspi64 dragon410
 
 Supported Ubuntu releases:
 
-$DISTRO: 14.04 15.04 15.10 16.04
+$DISTRO: 14.04 16.04
 
 Other options:
 -k            don't cleanup after exit

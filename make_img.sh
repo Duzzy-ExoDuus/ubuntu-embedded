@@ -69,7 +69,7 @@ TAILPID=$!
 
 exec 3>&1 4>&2 >build.log 2>&1
 
-ARRAY=("14.04:trusty" "15.04:vivid" "15.10:wily" "16.04:xenial")
+ARRAY=("14.04:trusty" "16.04:xenial")
 
 ubuntuversion() {
 	local CMD="$1"
@@ -406,7 +406,7 @@ Available values for:
 
 Supported Ubuntu releases:
 
-\$DISTRO: 14.04 15.04 15.10 16.04
+\$DISTRO: 14.04 16.04
 
 Other options:
 -k            don't cleanup after exit
