@@ -4,17 +4,26 @@ Tool to create Ubuntu images for embedded systems (mainly arm / arm64 boards
 like the Beaglebone, the RaspberryPi 2, the RaspberryPi 3 or the 96Boards
 DragonBoard 410c).
 
+Every board is pinned to a known-good Ubuntu release, and while we **strongly**
+suggest to use the associated release, user can override this behaviour using the
+_-d $DISTRO_ command line switch (see the distro field in boards.db and examples
+below).
+
 **Crash course**
 
-To build a Xenial image for the Beaglebone Black:
+To build a Xenial (Ubuntu 16.04) image for the Beaglebone Black:
 
 sudo ./make_img.sh -b beaglebone
 
-Or a Xenial image for the RaspberryPi 2:
+or a Trusty (Ubuntu 14.04) variant:
+
+sudo ./make_img.sh -b beaglebone -d 14.04
+
+To build a Xenial image for the RaspberryPi 2:
 
 sudo ./make_img.sh -b raspi2
 
-Or the RaspberryPi 3 (**_experimental_**):
+Or for the RaspberryPi 3 (**_experimental_**):
 
 sudo ./make_img.sh -b raspi3
 
@@ -40,10 +49,13 @@ Additional options are available through the help section (./make_img.sh -h):
 
 ```
 [flag@southcross ubuntu-embedded]$ ./make_img.sh -h
-usage: make_img.sh -b $BOARD -d $DISTRO [options...]
+usage: make_img.sh -b $BOARD [-d $DISTRO] [options...]
 
 Available values for:
 $BOARD:  beaglexm panda beaglebone mirabox cubox raspi2 raspi3 raspi64 dragon410c
+
+Supported Ubuntu releases:
+
 $DISTRO: 14.04 15.04 15.10 16.04
 
 Other options:
