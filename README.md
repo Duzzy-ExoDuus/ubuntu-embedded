@@ -43,7 +43,7 @@ Additional options are available through the help section (./make_img.sh -h):
 usage: make_img.sh -b $BOARD -d $DISTRO [options...]
 
 Available values for:
-$BOARD:  beaglexm panda beaglebone mirabox cubox arndale5250 raspi2 raspi3 raspi64 dragon410c
+$BOARD:  beaglexm panda beaglebone mirabox cubox raspi2 raspi3 raspi64 dragon410c
 $DISTRO: 14.04 15.04 15.10 16.04
 
 Other options:

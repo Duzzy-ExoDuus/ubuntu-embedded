@@ -56,16 +56,6 @@ uboot-prefix: mx6_cubox-i
 bootloaders: SPL:2 u-boot.img:84
 serial: ttymxc0
 
-# XXX not working yet
-board: arndale5250
-arch: armhf
-machine: Insignal Arndale evaluation board based on EXYNOS5250
-ptable: mbr
-layout: /boot,ext2,256M /,ext4,FILL
-bootloader: vanilla
-bootloaders: arndale-bl1.bin:1 smdk5250-spl.bin:17 u-boot.bin:49
-serial: ttySAC2
-
 board: raspi2
 arch: armhf
 machine: Raspberry Pi 2 Model B
