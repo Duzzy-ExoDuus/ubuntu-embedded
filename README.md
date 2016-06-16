@@ -14,11 +14,11 @@ Or a Xenial image for the RaspberryPi 2:
 
 sudo ./make_img.sh -b raspi2 -d 16.04
 
-Or the RaspberryPi 3 (experimental):
+Or the RaspberryPi 3 (**_experimental_**):
 
 sudo ./make_img.sh -b raspi3 -d 16.04
 
-To build an arm64 Xenial image for the RaspberryPi3 (experimental):
+To build an arm64 Xenial image for the RaspberryPi3 (**_experimental_**):
 
 sudo ./make_img.sh -b raspi3 -d 16.04
 
