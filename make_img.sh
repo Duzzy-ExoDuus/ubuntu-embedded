@@ -399,10 +399,13 @@ BOARDS="$(get_all_fields "board")"
 usage()
 {
 cat << EOF
-usage: $(basename $0) -b \$BOARD -d \$DISTRO [options...]
+usage: $(basename $0) -b \$BOARD [-d \$DISTRO] [options...]
 
 Available values for:
 \$BOARD: $BOARDS
+
+Supported Ubuntu releases:
+
 \$DISTRO: 14.04 15.04 15.10 16.04
 
 Other options:
@@ -431,8 +434,8 @@ while [ $# -gt 0 ]; do
 			[ -n "$2" ] && BOARD=$2 && shift || usage
 			;;
 		-d)
-			[ -n "$2" ] && DISTRO=$2 && shift || usage
-			[ -z $(ugetcod "$DISTRO") ] && echo "Error: $DISTRO is not a valid input" && exit 1
+			[ -n "$2" ] && IDISTRO=$2 && shift || usage
+			[ -z $(ugetcod "$IDISTRO") ] && echo "Error: $IDISTRO is not a valid input" && exit 1
 			;;
 		-k)
 			KEEP=1
@@ -474,7 +477,7 @@ while [ $# -gt 0 ]; do
 done
 
 # mandatory checks
-[ -z "$BOARD" -o -z "$DISTRO" ] && usage
+[ -z "$BOARD" ] && usage
 # XXX check if $BOARD is known
 ARCH=$(get_field "$BOARD" "arch") || true
 case "$ARCH" in
@@ -511,6 +514,7 @@ SGDISK=$(which sgdisk) || true
 [ $(id -u) -ne 0 ] && echo "Error: run me with sudo!" && exit 1
 
 # optional parameters
+PDISTRO=$(get_field "$BOARD" "distro") || true
 SERIAL=$(get_field "$BOARD" "serial") || true
 UENV=$(get_field "$BOARD" "uenv") || true
 UBOOTPREF=$(get_field "$BOARD" "uboot-prefix") || true
@@ -534,6 +538,7 @@ fi
 
 # final environment setup
 trap cleanup 0 1 2 3 9 15
+DISTRO=${IDISTRO-$PDISTRO}
 KERNEL=${KERNEL:-linux-image-generic}
 DEVICE="ubuntu-embedded-$DISTRO-$BOARD.img"
 ROOTFS="${UROOTFS:-http://cdimage.ubuntu.com/ubuntu-core/releases/$DISTRO/release/ubuntu-core-$DISTRO-core-$ARCH.tar.gz}"

@@ -1,5 +1,6 @@
 board: beaglexm
 arch: armhf
+distro: 14.04
 machine: OMAP3 Beagle Board
 ptable: mbr
 layout: BOOTDIR,vfat,256M /,ext4,FILL
@@ -11,6 +12,7 @@ serial: ttyO2
 
 board: panda
 arch: armhf
+distro: 14.04
 machine: OMAP4 Panda board
 ptable: mbr
 layout: BOOTDIR,vfat,256M /,ext4,FILL
@@ -20,19 +22,9 @@ uboot-prefix: omap4_panda
 bootloaders: MLO>MLO u-boot.bin>u-boot.img
 serial: ttyO2
 
-board: beaglebone
-arch: armhf
-machine: TI AM335x BeagleBone
-ptable: mbr
-layout: BOOTDIR,vfat,256M /,ext4,FILL
-bootloader: vanilla
-uenv: generic
-uboot-prefix: am335x_boneblack
-bootloaders: MLO>MLO u-boot.img>u-boot.img
-serial: ttyO0
-
 board: mirabox
 arch: armhf
+distro: 14.04
 machine: Globalscale Mirabox
 # layout: mountpoint,filesystem,size
 # where:
@@ -46,8 +38,21 @@ layout: BOOTDIR,vfat,256M /,ext4,FILL
 bootloader: vanilla
 serial: ttyS0
 
+board: beaglebone
+arch: armhf
+distro: 16.04
+machine: TI AM335x BeagleBone
+ptable: mbr
+layout: BOOTDIR,vfat,256M /,ext4,FILL
+bootloader: vanilla
+uenv: generic
+uboot-prefix: am335x_boneblack
+bootloaders: MLO>MLO u-boot.img>u-boot.img
+serial: ttyO0
+
 board: cubox
 arch: armhf
+distro: 16.04
 machine: SolidRun i.MX 6Quad/Dual/DualLite/Solo CuBox-i Board
 ptable: mbr
 layout: /,ext4,FILL
@@ -58,6 +63,7 @@ serial: ttymxc0
 
 board: raspi2
 arch: armhf
+distro: 16.04
 machine: Raspberry Pi 2 Model B
 ptable: mbr
 layout: /boot/firmware,vfat,256M /,ext4,FILL
@@ -69,6 +75,7 @@ packages: raspberrypi2-firmware
 
 board: raspi3
 arch: armhf
+distro: 16.04
 machine: Raspberry Pi 3 Model B Rev 1.2
 ptable: mbr
 layout: /boot/firmware,vfat,256M /,ext4,FILL
@@ -80,6 +87,7 @@ packages: raspberrypi3-firmware
 
 board: raspi64
 arch: arm64
+distro: 16.04
 machine: Raspberry Pi 3 Model B Rev 1.2
 ptable: mbr
 layout: /boot/firmware,vfat,256M /,ext4,FILL
@@ -89,6 +97,7 @@ kernel: linux-raspi64
 
 board: dragon410c
 arch: arm64
+distro: 16.04
 machine: Qualcomm Technologies, Inc. APQ 8016 SBC
 ptable: gpt
 bootloader: fastboot
@@ -98,6 +107,7 @@ packages: dragon410c-firmware
 
 board: odroidc2
 arch: arm64
+distro: 16.04
 machine: Dummy Virtual Machine
 ptable: mbr
 layout: /boot/firmware,vfat,256M /,ext4,FILL

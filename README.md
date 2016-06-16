@@ -6,25 +6,25 @@ DragonBoard 410c).
 
 **Crash course**
 
-To build a Trusty image for the Beaglebone Black:
+To build a Xenial image for the Beaglebone Black:
 
-sudo ./make_img.sh -b beaglebone -d 14.04
+sudo ./make_img.sh -b beaglebone
 
 Or a Xenial image for the RaspberryPi 2:
 
-sudo ./make_img.sh -b raspi2 -d 16.04
+sudo ./make_img.sh -b raspi2
 
 Or the RaspberryPi 3 (**_experimental_**):
 
-sudo ./make_img.sh -b raspi3 -d 16.04
+sudo ./make_img.sh -b raspi3
 
 To build an arm64 Xenial image for the RaspberryPi3 (**_experimental_**):
 
-sudo ./make_img.sh -b raspi3 -d 16.04
+sudo ./make_img.sh -b raspi3
 
 Or one for the 96Boards DragonBoard 410c:
 
-sudo ./make_img.sh -b dragon410c -d 16.04
+sudo ./make_img.sh -b dragon410c
 
 Serial console: 115200 8N1 - no hardware or software flow control 
 
