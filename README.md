@@ -6,27 +6,27 @@ DragonBoard 410c).
 
 **Crash course**
 
-To build an image for the Beaglebone Black:
+To build a Trusty image for the Beaglebone Black:
 
 sudo ./make_img.sh -b beaglebone -d 14.04
 
-For the RaspberryPi 2:
+Or a Xenial image for the RaspberryPi 2:
 
-sudo ./make_img.sh -b raspi2 -d 15.10
+sudo ./make_img.sh -b raspi2 -d 16.04
 
-or if you prefer a bleeding edge Xenial image:
+Or the RaspberryPi 3 (experimental):
 
-sudo ./make_img.sh -b raspi2 -d 16.04 -t
+sudo ./make_img.sh -b raspi3 -d 16.04
 
-For the RaspberryPi 3:
+To build an arm64 Xenial image for the RaspberryPi3 (experimental):
 
-sudo ./make_img.sh -b raspi3 -d 16.04 -t
+sudo ./make_img.sh -b raspi3 -d 16.04
 
-To create an Ubuntu image for the 96Boards DragonBoard 410c:
+Or one for the 96Boards DragonBoard 410c:
 
-sudo ./make_img.sh -b dragon410c -d 16.04 -t
+sudo ./make_img.sh -b dragon410c -d 16.04
 
-Serial console: 115200 8N1 - no hardware and software flow control 
+Serial console: 115200 8N1 - no hardware or software flow control 
 
 Default user / password: ubuntu / ubuntu
 
@@ -43,12 +43,11 @@ Additional options are available through the help section (./make_img.sh -h):
 usage: make_img.sh -b $BOARD -d $DISTRO [options...]
 
 Available values for:
-$BOARD:  beaglexm panda beaglebone mirabox cubox arndale5250 raspi2 raspi3 dragon410c
+$BOARD:  beaglexm panda beaglebone mirabox cubox arndale5250 raspi2 raspi3 raspi64 dragon410c
 $DISTRO: 14.04 15.04 15.10 16.04
 
 Other options:
 -k            don't cleanup after exit
--t            use deboostrap to populate the rootfs
 
 Misc "catch-all" option:
 -o <opt=value[,opt=value, ...]> where:
@@ -57,6 +56,5 @@ size:			size of the image file (e.g. 2G, default: 1G)
 user:			credentials of the user created on the target image
 passwd:			same as above, but for the password here
 pkgs:			install additional pkgs (pkgs="pkg1 pkg2 pkg3...")
-rootfs:			rootfs tar.gz archive (e.g. ubuntu core), can be local or remote (http/ftp)
 script:			initramfs script to be installed
 ```
