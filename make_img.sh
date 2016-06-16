@@ -454,7 +454,6 @@ while [ $# -gt 0 ]; do
 				case "$cmd" in
 					"pkgs") MPKGS="$arg" ;;
 					"passwd") PASSWD="$arg" ;;
-					"rootfs") UROOTFS="$arg" ;;
 					"script") MSCRIPT="$arg" ;;
 					"size")
 						USRIMGSIZE=`numfmt --from=iec --invalid=ignore $arg`
@@ -541,7 +540,6 @@ trap cleanup 0 1 2 3 9 15
 DISTRO=${IDISTRO-$PDISTRO}
 KERNEL=${KERNEL:-linux-image-generic}
 DEVICE="ubuntu-embedded-$DISTRO-$BOARD.img"
-ROOTFS="${UROOTFS:-http://cdimage.ubuntu.com/ubuntu-core/releases/$DISTRO/release/ubuntu-core-$DISTRO-core-$ARCH.tar.gz}"
 ROOTFSDIR=$(mktemp -d build/embedded-rootfs.XXXXXX)
 BOOTDIR=$(mktemp -d build/embedded-boot.XXXXXX)
 FSTABFILE=$(mktemp build/embedded-fstab.XXXXXX)
@@ -557,7 +555,6 @@ echo $MOUNTFILE
 echo $UBOOTPREF
 echo $BOOTLOADERS
 echo $DEVICE
-echo $ROOTFS
 echo $PTABLE
 echo $IMGSIZE
 echo $USER
