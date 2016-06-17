@@ -40,7 +40,7 @@ serial: ttyS0
 
 board: beaglebone
 arch: armhf
-distro: 16.04
+distro: 14.04
 machine: TI AM335x BeagleBone
 ptable: mbr
 layout: BOOTDIR,vfat,256M /,ext4,FILL

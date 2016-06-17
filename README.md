@@ -11,13 +11,9 @@ below).
 
 **Crash course**
 
-To build a Xenial (Ubuntu 16.04) image for the Beaglebone Black:
+To build a Trusty (Ubuntu 14.04) image for the Beaglebone Black:
 
 sudo ./make_img.sh -b beaglebone
-
-or a Trusty (Ubuntu 14.04) variant:
-
-sudo ./make_img.sh -b beaglebone -d 14.04
 
 To build a Xenial image for the RaspberryPi 2:
 
