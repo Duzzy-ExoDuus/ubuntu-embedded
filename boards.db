@@ -102,7 +102,8 @@ machine: Qualcomm Technologies, Inc. APQ 8016 SBC
 ptable: gpt
 bootloader: fastboot
 serial: ttyMSM0
-kernel: linux-image-4.4.0-1004-snapdragon
+kernel: linux-snapdragon
+repositories: universe
 packages: dragon410c-firmware
 
 board: odroidc2
