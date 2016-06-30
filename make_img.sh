@@ -482,14 +482,17 @@ ARCH=$(get_field "$BOARD" "arch") || true
 case "$ARCH" in
 	arm64)
 		ARCHIVE="http://ports.ubuntu.com"
+		SECURITYARCHIVE="http://ports.ubuntu.com"
 		QEMU=$(which qemu-aarch64-static) || true
 		;;
 	armhf)
 		ARCHIVE="http://ports.ubuntu.com"
+		SECURITYARCHIVE="http://ports.ubuntu.com"
 		QEMU=$(which qemu-arm-static) || true
 		;;
 	i386)
 		ARCHIVE="http://archive.ubuntu.com/ubuntu"
+		SECURITYARCHIVE="http://security.ubuntu.com/ubuntu"
 		QEMU=$(which qemu-i386-static) || true
 		;;
 	*)
@@ -523,6 +526,7 @@ KERNEL=$(get_field "$BOARD" "kernel") || true
 BPKGS=$(get_field "$BOARD" "packages") || true
 BSCRIPT=$(get_field "$BOARD" "script") || true
 REPOSITORIES=$(get_field "$BOARD" "repositories") || true
+POCKETS=$(get_field "$BOARD" "pockets") || true
 
 # sanitize input params
 IMGSIZE=${USRIMGSIZE:-$(echo $DEFIMGSIZE)}
@@ -592,7 +596,7 @@ cp /etc/resolv.conf $ROOTFSDIR/etc
 cp skel/policy-rc.d $ROOTFSDIR/usr/sbin/
 chmod +x $ROOTFSDIR/usr/sbin/policy-rc.d
 do_chroot $ROOTFSDIR apt-get update
-do_chroot $ROOTFSDIR apt-get install -y ifupdown udev
+do_chroot $ROOTFSDIR apt-get install -y ifupdown udev software-properties-common
 
 # end of init_system_generic()
 
@@ -633,24 +637,49 @@ cp skel/$KERNELCONF $ROOTFSDIR/etc
 # - apply all custom patches
 # - run flash-kernel as last step
 echo "== Install pkgs =="
-# install the corresponding src repositories
-awk '$1 ~ /^deb$/{sub(/deb/, "&-src");print}' $ROOTFSDIR/etc/apt/sources.list >> $ROOTFSDIR/etc/apt/sources.list
-do_chroot $ROOTFSDIR apt-get update
+
+# setup repositories / pockets
+echo "deb ${ARCHIVE} ${CODENAME} main ${REPOSITORIES}" > ${ROOTFSDIR}/etc/apt/sources.list
+echo "deb-src ${ARCHIVE} ${CODENAME} main ${REPOSITORIES}" >> ${ROOTFSDIR}/etc/apt/sources.list
+
+if echo "$POCKETS" | grep -q updates
+then
+	echo "deb ${ARCHIVE} ${CODENAME}-updates main ${REPOSITORIES}" >> ${ROOTFSDIR}/etc/apt/sources.list
+	echo "deb-src ${ARCHIVE} ${CODENAME}-updates main ${REPOSITORIES}" >> ${ROOTFSDIR}/etc/apt/sources.list
+fi
+
+if echo "$POCKETS" | grep -q security
+then
+	echo "deb ${SECURITYARCHIVE} ${CODENAME}-security main ${REPOSITORIES}" >> ${ROOTFSDIR}/etc/apt/sources.list
+	echo "deb-src ${SECURITYARCHIVE} ${CODENAME}-security main ${REPOSITORIES}" >> ${ROOTFSDIR}/etc/apt/sources.list
+fi
+
+if echo "$POCKETS" | grep -q proposed
+then
+	echo "deb ${ARCHIVE} ${CODENAME}-proposed main ${REPOSITORIES}" >> ${ROOTFSDIR}/etc/apt/sources.list
+	echo "deb-src ${ARCHIVE} ${CODENAME}-proposed main ${REPOSITORIES}" >> ${ROOTFSDIR}/etc/apt/sources.list
+fi
+
+if echo "$POCKETS" | grep -q backports
+then
+	echo "deb ${ARCHIVE} ${CODENAME}-backports main ${REPOSITORIES}" >> ${ROOTFSDIR}/etc/apt/sources.list
+	echo "deb-src ${ARCHIVE} ${CODENAME}-backports main ${REPOSITORIES}" >> ${ROOTFSDIR}/etc/apt/sources.list
+fi
+
 # the embedded PPA is mandatory
-do_chroot $ROOTFSDIR apt-get install -y software-properties-common
 do_chroot $ROOTFSDIR add-apt-repository -y ${EMBEDDEDPPA}
 # pin the embedded ppa
 cp skel/embedded-ppa $ROOTFSDIR/etc/apt/preferences.d/
-# add optional repostitories
-for REPO in ${REPOSITORIES}; do
-	do_chroot $ROOTFSDIR add-apt-repository -y ${REPO}
-done
-do_chroot $ROOTFSDIR apt-get update
-# if specified, add a 3rd party PPA
+
+# add any 3rd party PPAs
 if [ "${PPA}" ]; then
 	do_chroot $ROOTFSDIR add-apt-repository -y ${PPA}
-	do_chroot $ROOTFSDIR apt-get update
 fi
+
+# finally update the apt cache and upgrade
+do_chroot $ROOTFSDIR apt-get update
+do_chroot $ROOTFSDIR apt-get -y upgrade
+
 # don't run flash-kernel during kernel installation
 export FLASH_KERNEL_SKIP=1
 do_chroot $ROOTFSDIR apt-get -y install ${KERNEL} ${BASEPKGS}

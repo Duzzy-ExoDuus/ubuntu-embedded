@@ -9,6 +9,7 @@ uenv: generic
 uboot-prefix: omap3_beagle
 bootloaders: MLO>MLO u-boot.bin>u-boot.img
 serial: ttyO2
+pockets: updates security
 
 board: panda
 arch: armhf
@@ -21,6 +22,7 @@ uenv: generic
 uboot-prefix: omap4_panda
 bootloaders: MLO>MLO u-boot.bin>u-boot.img
 serial: ttyO2
+pockets: updates security
 
 board: mirabox
 arch: armhf
@@ -37,6 +39,7 @@ ptable: mbr
 layout: BOOTDIR,vfat,256M /,ext4,FILL
 bootloader: vanilla
 serial: ttyS0
+pockets: updates security
 
 board: beaglebone
 arch: armhf
@@ -49,6 +52,7 @@ uenv: generic
 uboot-prefix: am335x_boneblack
 bootloaders: MLO>MLO u-boot.img>u-boot.img
 serial: ttyO0
+pockets: updates security
 
 board: cubox
 arch: armhf
@@ -60,6 +64,7 @@ bootloader: vanilla
 uboot-prefix: mx6_cubox-i
 bootloaders: SPL:2 u-boot.img:84
 serial: ttymxc0
+pockets: updates security
 
 board: raspi2
 arch: armhf
@@ -72,6 +77,7 @@ serial: ttyAMA0
 repositories: universe
 kernel: linux-raspi2
 packages: raspberrypi2-firmware
+pockets: updates security
 
 board: raspi3
 arch: armhf
@@ -84,6 +90,7 @@ serial: ttyAMA0
 repositories: universe
 kernel: linux-raspi2
 packages: raspberrypi3-firmware
+pockets: updates security
 
 board: raspi64
 arch: arm64
@@ -94,6 +101,7 @@ layout: /boot/firmware,vfat,256M /,ext4,FILL
 bootloader: vanilla
 repositories: universe
 kernel: linux-raspi64
+pockets: updates security
 
 board: dragon410c
 arch: arm64
@@ -105,6 +113,7 @@ serial: ttyMSM0
 kernel: linux-snapdragon
 repositories: universe
 packages: dragon410c-firmware
+pockets: updates security
 
 board: odroidc2
 arch: arm64
@@ -115,3 +124,4 @@ layout: /boot/firmware,vfat,256M /,ext4,FILL
 bootloader: vanilla
 bootloaders: bl1.bin.hardkernel:1 u-boot.bin:97
 serial: ttyS0
+pockets: updates security
