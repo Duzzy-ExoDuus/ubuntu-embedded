@@ -623,6 +623,9 @@ do_chroot $ROOTFSDIR adduser $USER adm
 do_chroot $ROOTFSDIR adduser $USER sudo
 cp skel/interfaces $ROOTFSDIR/etc/network/
 # avoid dynamic naming of the NIC
+# XXX - lp1593379 "systemd 229-4ubuntu6 ignores net.ifnames=0 on USB"
+# XXX - prevent this from working on USB
+# XXX - https://bugs.launchpad.net/ubuntu/+source/systemd/+bug/1593379 
 do_chroot $ROOTFSDIR touch /etc/udev/rules.d/80-net-setup-link.rules
 echo "$BOARD" > $ROOTFSDIR/etc/hostname
 cp skel/$KERNELCONF $ROOTFSDIR/etc
