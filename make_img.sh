@@ -717,6 +717,17 @@ echo "== Install Bootloader =="
 # XXX so far, this part is relevant only in case we use uboot
 ${BOOTLOADER}_bootchain
 
+# image report
+SHASUM=`shasum ${DEVICE}`
+echo "Shasum:		$SHASUM" > ${DEVICE}.report
+GITTIP=`git rev-parse HEAD`
+echo "Git sha:	$GITTIP ubuntu-embedded script" >> ${DEVICE}.report
+echo -e "\n\n\nInstalled components:\n" >> ${DEVICE}.report
+DPKGLIST=$(mktemp /tmp/dpkg.XXXXXX)
+do_chroot $ROOTFSDIR dpkg -l | awk 'NR>5 {printf "%-64s %s\n", $2,$3}' > ${DPKGLIST}
+cat ${DPKGLIST} >> ${DEVICE}.report
+rm ${DPKGLIST}
+
 rm $ROOTFSDIR/usr/sbin/policy-rc.d
 do_chroot $ROOTFSDIR apt-get clean
 [ -e "boards/$BOARD/first_boot.txt" ] && echo -e "\n\n\n\n" && cat "boards/$BOARD/first_boot.txt"
