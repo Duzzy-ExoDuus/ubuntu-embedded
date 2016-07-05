@@ -537,17 +537,19 @@ fi
 trap cleanup 0 1 2 3 9 15
 DISTRO=${IDISTRO-$PDISTRO}
 KERNEL=${KERNEL:-linux-image-generic}
+BUILDLOG="ubuntu-embedded-$DISTRO-$BOARD.buildlog"
 DEVICE="ubuntu-embedded-$DISTRO-$BOARD.img"
+REPORT="ubuntu-embedded-$DISTRO-$BOARD.report"
 ROOTFSDIR=$(mktemp -d build/embedded-rootfs.XXXXXX)
 BOOTDIR=$(mktemp -d build/embedded-boot.XXXXXX)
 FSTABFILE=$(mktemp build/embedded-fstab.XXXXXX)
 MOUNTFILE=$(mktemp build/embedded-mount.XXXXXX)
 
-rm -f ${DEVICE}.log && touch ${DEVICE}.log
-tail -f ${DEVICE}.log &
+rm -f ${BUILDLOG} && touch ${BUILDLOG}
+tail -f ${BUILDLOG} &
 TAILPID=$!
 
-exec 3>&1 4>&2 >${DEVICE}.log 2>&1
+exec 3>&1 4>&2 >${BUILDLOG} 2>&1
 
 echo "Summary: "
 echo $BOARD
@@ -719,13 +721,13 @@ ${BOOTLOADER}_bootchain
 
 # image report
 SHASUM=`shasum ${DEVICE}`
-echo "Shasum:		$SHASUM" > ${DEVICE}.report
+echo "Shasum:		$SHASUM" > ${REPORT}
 GITTIP=`git rev-parse HEAD`
-echo "Git sha:	$GITTIP ubuntu-embedded script" >> ${DEVICE}.report
-echo -e "\n\n\nInstalled components:\n" >> ${DEVICE}.report
+echo "Git sha:	$GITTIP  ubuntu-embedded script" >> ${REPORT}
+echo -e "\n\n\nInstalled components:\n" >> ${REPORT}
 DPKGLIST=$(mktemp /tmp/dpkg.XXXXXX)
 do_chroot $ROOTFSDIR dpkg -l | awk 'NR>5 {printf "%-64s %s\n", $2,$3}' > ${DPKGLIST}
-cat ${DPKGLIST} >> ${DEVICE}.report
+cat ${DPKGLIST} >> ${REPORT}
 rm ${DPKGLIST}
 
 rm $ROOTFSDIR/usr/sbin/policy-rc.d
