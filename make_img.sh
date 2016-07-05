@@ -63,12 +63,6 @@ BOOTDEVICE=
 ROOTDEVICE=
 BOOTLOADERDEVICE=
 
-rm -f build.log && touch build.log
-tail -f build.log &
-TAILPID=$!
-
-exec 3>&1 4>&2 >build.log 2>&1
-
 ARRAY=("14.04:trusty" "16.04:xenial")
 
 ubuntuversion() {
@@ -548,6 +542,12 @@ ROOTFSDIR=$(mktemp -d build/embedded-rootfs.XXXXXX)
 BOOTDIR=$(mktemp -d build/embedded-boot.XXXXXX)
 FSTABFILE=$(mktemp build/embedded-fstab.XXXXXX)
 MOUNTFILE=$(mktemp build/embedded-mount.XXXXXX)
+
+rm -f ${DEVICE}.log && touch ${DEVICE}.log
+tail -f ${DEVICE}.log &
+TAILPID=$!
+
+exec 3>&1 4>&2 >${DEVICE}.log 2>&1
 
 echo "Summary: "
 echo $BOARD
