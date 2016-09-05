@@ -52,6 +52,7 @@ USER="ubuntu"
 PASSWD="ubuntu"
 EMBEDDEDPPA="ppa:p-pisati/embedded"
 KEEP=0
+SIGN=0
 BASEPKGS="linux-base sudo net-tools vim whois kpartx netcat-openbsd openssh-server avahi-daemon"
 SCRIPTDIR="initramfs-scripts"
 
@@ -404,6 +405,7 @@ Supported Ubuntu releases:
 
 Other options:
 -k            don't cleanup after exit
+-s            gpg sign the report
 
 Misc "catch-all" option:
 -o <opt=value[,opt=value, ...]> where:
@@ -461,6 +463,9 @@ while [ $# -gt 0 ]; do
 			done
 			IFS=$OIFS
 			shift
+			;;
+		-s)
+			SIGN=1
 			;;
 		*|h)
 			usage
@@ -729,6 +734,7 @@ DPKGLIST=$(mktemp /tmp/dpkg.XXXXXX)
 do_chroot $ROOTFSDIR dpkg -l | awk 'NR>5 {printf "%-64s %s\n", $2,$3}' > ${DPKGLIST}
 cat ${DPKGLIST} >> ${REPORT}
 rm ${DPKGLIST}
+[ ${SIGN} -eq 1 ] && gpg --sign ${REPORT}
 
 rm $ROOTFSDIR/usr/sbin/policy-rc.d
 do_chroot $ROOTFSDIR apt-get clean
