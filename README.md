@@ -25,7 +25,7 @@ sudo ./make_img.sh -b raspi3
 
 To build an arm64 Xenial image for the RaspberryPi3 **_(EXPERIMENTAL)_**:
 
-sudo ./make_img.sh -b raspi3
+sudo ./make_img.sh -b raspi64
 
 Or one for the 96Boards DragonBoard 410c:
 
@@ -52,7 +52,7 @@ Additional options are available through the help section (./make_img.sh -h):
 usage: make_img.sh -b $BOARD [-d $DISTRO] [options...]
 
 Available values for:
-$BOARD:  beaglexm panda beaglebone mirabox cubox raspi2 raspi3 raspi64 dragon410c
+$BOARD:  beaglexm panda beaglebone mirabox cubox raspi2 raspi3 raspi64 dragon410c edison
 
 Supported Ubuntu releases:
 
