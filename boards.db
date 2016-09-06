@@ -24,6 +24,19 @@ bootloaders: MLO>MLO u-boot.bin>u-boot.img
 serial: ttyO2
 pockets: updates security
 
+board: beaglebone
+arch: armhf
+distro: 14.04
+machine: TI AM335x BeagleBone
+ptable: mbr
+layout: BOOTDIR,vfat,256M /,ext4,FILL
+bootloader: vanilla
+uenv: generic
+uboot-prefix: am335x_boneblack
+bootloaders: MLO>MLO u-boot.img>u-boot.img
+serial: ttyO0
+pockets: updates security
+
 board: mirabox
 arch: armhf
 distro: 14.04
@@ -39,19 +52,6 @@ ptable: mbr
 layout: BOOTDIR,vfat,256M /,ext4,FILL
 bootloader: vanilla
 serial: ttyS0
-pockets: updates security
-
-board: beaglebone
-arch: armhf
-distro: 14.04
-machine: TI AM335x BeagleBone
-ptable: mbr
-layout: BOOTDIR,vfat,256M /,ext4,FILL
-bootloader: vanilla
-uenv: generic
-uboot-prefix: am335x_boneblack
-bootloaders: MLO>MLO u-boot.img>u-boot.img
-serial: ttyO0
 pockets: updates security
 
 board: cubox
@@ -115,16 +115,17 @@ repositories: universe
 packages: dragon410c-firmware
 pockets: updates security
 
-board: odroidc2
-arch: arm64
-distro: 16.04
-machine: Dummy Virtual Machine
-ptable: mbr
-layout: /boot/firmware,vfat,256M /,ext4,FILL
-bootloader: vanilla
-bootloaders: bl1.bin.hardkernel:1 u-boot.bin:97
-serial: ttyS0
-pockets: updates security
+# XXX kernel is stil missing
+#board: odroidc2
+#arch: arm64
+#distro: 16.04
+#machine: Dummy Virtual Machine
+#ptable: mbr
+#layout: /boot/firmware,vfat,256M /,ext4,FILL
+#bootloader: vanilla
+#bootloaders: bl1.bin.hardkernel:1 u-boot.bin:97
+#serial: ttyS0
+#pockets: updates security
 
 board: edison
 arch: i386
