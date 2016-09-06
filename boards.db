@@ -130,7 +130,11 @@ board: edison
 arch: i386
 distro: 16.04
 machine: XXX dummy string - to be removed
+ptable: mbr
 layout: /,ext4,FILL
+bootloader: vanilla
 serial: ttyMFD2
 kernel: linux-edison
+repositories: universe
+pockets: updates security
 packages: psmisc u-boot-tools wireless-tools wpasupplicant
