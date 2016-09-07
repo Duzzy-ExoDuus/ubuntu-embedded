@@ -494,6 +494,11 @@ case "$ARCH" in
 		SECURITYARCHIVE="http://security.ubuntu.com/ubuntu"
 		QEMU=$(which qemu-i386-static) || true
 		;;
+	amd64)
+		ARCHIVE="http://archive.ubuntu.com/ubuntu"
+		SECURITYARCHIVE="http://security.ubuntu.com/ubuntu"
+		QEMU=$(which qemu-x86_64-static) || true
+		;;
 	*)
 		echo "Error: Unsupported architecture: $ARCH"
 		exit 1
