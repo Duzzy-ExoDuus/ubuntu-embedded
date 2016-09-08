@@ -53,7 +53,8 @@ PASSWD="ubuntu"
 EMBEDDEDPPA="ppa:p-pisati/embedded"
 KEEP=0
 SIGN=0
-BASEPKGS="linux-base sudo net-tools vim whois kpartx netcat-openbsd openssh-server avahi-daemon"
+BASEPKGS="linux-base sudo net-tools vim whois kpartx netcat-openbsd \
+openssh-server avahi-daemon eatmydata less bsdmainutils"
 SCRIPTDIR="initramfs-scripts"
 
 BOARD=
