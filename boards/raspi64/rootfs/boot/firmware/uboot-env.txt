@@ -2,6 +2,6 @@ bootargs=console=ttyS0,115200 console=tty0 root=/dev/mmcblk0p2 rootfstype=ext4 r
 fdt_addr_r=0x00000100
 kernel_addr_r=0x01000000
 loaddtb=fatload mmc 0:1 ${fdt_addr_r} bcm2837-rpi-3-b.dtb
-loadk=fatload mmc 0:1 ${kernel_addr_r} image
+loadk=ext4load mmc 0:2 ${kernel_addr_r} /boot/vmlinuz
 bootubu=run loaddtb; run loadk; booti ${kernel_addr_r} - ${fdt_addr_r}
 bootcmd=run bootubu
