@@ -139,3 +139,16 @@ kernel: linux-edison
 repositories: universe
 pockets: updates security
 packages: psmisc u-boot-tools wireless-tools wpasupplicant
+
+# XXX hangs when trying to install grub-pc
+board: qemu64
+arch: amd64
+distro: 16.04
+machine: XXX dummy string - to be removed
+ptable: mbr
+layout: /,ext4,FILL
+bootloader: vanilla
+serial: ttyS0
+kernel: linux-generic
+repositories: universe
+pockets: updates security
