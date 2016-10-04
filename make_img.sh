@@ -22,6 +22,7 @@
 
 # TODO:
 #
+# - DEBIAN_FRONTEND=noninteractive apt-get -y install linux-generic ???
 # - multiple ppa support
 # - kernel and bootloader selection support
 # - arch support (arm64? amd64? i386?)
@@ -65,7 +66,7 @@ BOOTDEVICE=
 ROOTDEVICE=
 BOOTLOADERDEVICE=
 
-ARRAY=("14.04:trusty" "16.04:xenial")
+ARRAY=("14.04:trusty" "16.04:xenial" "16.10:yakkety")
 
 ubuntuversion() {
 	local CMD="$1"
@@ -402,7 +403,7 @@ Available values for:
 
 Supported Ubuntu releases:
 
-\$DISTRO: 14.04 16.04
+\$DISTRO: 14.04 16.04 16.10
 
 Other options:
 -k            don't cleanup after exit
