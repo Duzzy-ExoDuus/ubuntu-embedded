@@ -19,15 +19,15 @@ To build a Xenial image for the RaspberryPi 2:
 
 sudo ./make_img.sh -b raspi2
 
-Or for the RaspberryPi 3 **_(EXPERIMENTAL)_**:
+Or for the RaspberryPi 3:
 
 sudo ./make_img.sh -b raspi3
 
-To build an arm64 Xenial image for the RaspberryPi3 **_(EXPERIMENTAL)_**:
+To build an aarch64/arm64 Yakkety image for the RaspberryPi3:
 
 sudo ./make_img.sh -b raspi64
 
-Or one for the 96Boards DragonBoard 410c:
+Or Xenial image for the 96Boards DragonBoard 410c:
 
 sudo ./make_img.sh -b dragon410c
 
