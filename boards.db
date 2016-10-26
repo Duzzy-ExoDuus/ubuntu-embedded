@@ -95,13 +95,13 @@ pockets: updates security
 
 board: raspi64
 arch: arm64
-distro: 16.04
+distro: 16.10
 machine: Raspberry Pi 3 Model B Rev 1.2
 ptable: mbr
 layout: /boot/firmware,vfat,256M /,ext4,FILL
 bootloader: vanilla
 repositories: universe
-kernel: linux-raspi64
+kernel: linux-raspi2
 pockets: updates security
 
 board: dragon410c
