@@ -93,30 +93,28 @@ ubuntuversion() {
 
 ugetrel()
 {
-	echo $(ubuntuversion "release" "$1")
+	ubuntuversion release "$1"
 }
 
 ugetcod()
 {
-	echo $(ubuntuversion "codename" "$1")
+	ubuntuversion codename "$1"
 }
 
 ugetrels()
 {
-	echo $(ubuntuversion "releases")
+	ubuntuversion releases
 }
 
 get_all_fields() {
 	local field="$1"
 	local all
 
-	cat "$DB" | {
-		while read key value; do
-			#echo "a: $all"
-			[ "$key" = "${field}:" ] && all="$all $value"
-		done
-		echo "$all"
-	}
+	while read key value; do
+		#echo "a: $all"
+		[ "$key" = "${field}:" ] && all="$all $value"
+	done <"$DB"
+	echo "$all"
 }
 
 
@@ -128,27 +126,25 @@ get_field() {
 	local key
 	local value
 
-	cat "$DB" | {
-		while read key value; do
-			case "$state" in
-				"block")
-					[ "$key" = "board:" ] && [ "$value" = "$board" ] && state="field"
-				;;
-				"field")
-					case "$key" in
-						"${field_name}:")
-							echo "$value"
-						;;
-						"")
-							echo ""
-							return
-						;;
-					esac
-				;;
-			esac
-		done
-		echo ""
-	}
+	while read key value; do
+		case "$state" in
+			block)
+				[ "$key" = "board:" ] && [ "$value" = "$board" ] && state="field"
+			;;
+			field)
+				case "$key" in
+					"${field_name}:")
+						echo "$value"
+					;;
+					"")
+						echo
+						return
+					;;
+				esac
+			;;
+		esac
+	done <"$DB"
+	echo
 }
 
 mount_dev()
@@ -395,29 +391,29 @@ BOARDS="$(get_all_fields "board")"
 
 usage()
 {
-cat << EOF
-usage: $(basename $0) -b \$BOARD [-d \$DISTRO] [options...]
+	cat <<-EOF
+	usage: ${0##*/} -b \$BOARD [-d \$DISTRO] [options...]
 
-Available values for:
-\$BOARD: $BOARDS
+	Available values for:
+	\$BOARD: $BOARDS
 
-Supported Ubuntu releases:
+	Supported Ubuntu releases:
 
-\$DISTRO: 14.04 16.04 16.10
+	\$DISTRO: 14.04 16.04 16.10
 
-Other options:
--k            don't cleanup after exit
--s            gpg sign the report
+	Other options:
+	-k            don't cleanup after exit
+	-s            gpg sign the report
 
-Misc "catch-all" option:
--o <opt=value[,opt=value, ...]> where:
+	Misc "catch-all" option:
+	-o <opt=value[,opt=value, ...]> where:
 
-size:			size of the image file (e.g. 2G, default: 1G)
-user:			credentials of the user created on the target image
-passwd:			same as above, but for the password here
-pkgs:			install additional pkgs (pkgs="pkg1 pkg2 pkg3...")
-script:			initramfs script to be installed
-EOF
+	size:			size of the image file (e.g. 2G, default: 1G)
+	user:			credentials of the user created on the target image
+	passwd:			same as above, but for the password here
+	pkgs:			install additional pkgs (pkgs="pkg1 pkg2 pkg3...")
+	script:			initramfs script to be installed
+	EOF
 	exit 1
 }
 
