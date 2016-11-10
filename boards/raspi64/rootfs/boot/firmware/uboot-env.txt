@@ -1,7 +1,8 @@
-bootargs=console=ttyS0,115200 console=tty0 root=/dev/mmcblk0p2 rootfstype=ext4 rootwait rw
-fdt_addr_r=0x00000100
+bootargs=console=ttyAMA0,115200 console=ttyS0,115200 console=tty0 root=/dev/mmcblk0p2 rootfstype=ext4 rootwait rw 8250.nr_uarts=1
+fdtfile=bcm2710-rpi-3-b.dtb
+fdt_addr_r=0x010000
 kernel_addr_r=0x01000000
-loaddtb=fatload mmc 0:1 ${fdt_addr_r} bcm2837-rpi-3-b.dtb
+loaddtb=fatload mmc 0:1 ${fdt_addr_r} ${fdtfile}
 loadk=ext4load mmc 0:2 ${kernel_addr_r} /boot/vmlinuz
 bootubu=run loaddtb; run loadk; booti ${kernel_addr_r} - ${fdt_addr_r}
 bootcmd=run bootubu
