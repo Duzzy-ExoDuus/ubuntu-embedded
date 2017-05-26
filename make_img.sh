@@ -66,7 +66,7 @@ BOOTDEVICE=
 ROOTDEVICE=
 BOOTLOADERDEVICE=
 
-ARRAY=("14.04:trusty" "16.04:xenial" "16.10:yakkety")
+ARRAY=("14.04:trusty" "16.04:xenial" "16.10:yakkety" "17.04:zesty")
 
 ubuntuversion() {
 	local CMD="$1"
@@ -399,7 +399,7 @@ usage()
 
 	Supported Ubuntu releases:
 
-	\$DISTRO: 14.04 16.04 16.10
+	\$DISTRO: 14.04 16.04 16.10 17.04
 
 	Other options:
 	-k            don't cleanup after exit
